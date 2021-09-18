@@ -25,7 +25,8 @@ namespace kpsWindow
         public  Button button = new Button();
         public int width = 7*40;
         public int height = 150;
-        public Image img = Image.FromFile("C:\\Users\\proki\\Downloads\\2dscene.jpg");
+    
+        private string bgpath;
         public int noOfKeys;
 
         private kpsGraphics hgraphics;
@@ -36,8 +37,11 @@ namespace kpsWindow
         {
             this.noOfKeys = noOfKeys;
 
-            Bitmap bmp = new Bitmap("C:\\Users\\proki\\Downloads\\kpsicon.jpg");
-           
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            
+            Bitmap bmp = new Bitmap(fileHandler.path + "\\ico.jpg");
+
+            this.bgpath = fileHandler.path + "\\bgimg.jpg";
 
             this.Icon = Icon.FromHandle(bmp.GetHicon());
            
@@ -61,7 +65,7 @@ namespace kpsWindow
         private void InitializeComponents()
         {
            
-             Hgraphics = new kpsGraphics(@"C:\Users\proki\Downloads\space.jpg", this.width, this.height, this);
+             Hgraphics = new kpsGraphics(this.bgpath, this.width, this.height, this);
 
             this.ClientSize = new Size(this.width,this.height);
         

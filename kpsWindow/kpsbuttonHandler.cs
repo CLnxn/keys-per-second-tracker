@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows;
+
 using SystemColors = System.Drawing.SystemColors;
 using System.Drawing;
 
@@ -24,24 +24,54 @@ namespace kpsWindow
         private LabelHandler kpsLh;
         private LabelHandler maxkpsLh;
 
+        private LabelHandler errorLabel;
+        private Image img;
+        private Bitmap bmap;
+
+        private bool willConfigure = true;
+
+        private int bHeight;
+        private int bWidth;
+
         private kpsGraphics kpsGraphics;
 
         public kpsbuttonHandler(kpsForm form)
         {
-
+            this.bHeight = 40;
+            this.bWidth = 40;
             this.form = form;
             this.noOfKeys = form.noOfKeys;
+            this.errorLabel = new LabelHandler(form);
 
 
 
+            try
+            {
+                img = Image.FromFile(fileHandler.path + "\\presseffect.png");
+                this.img = (Image)new Bitmap(img, new Size(bWidth, bHeight));
+
+                kpsLh = new LabelHandler(form, false);
+                maxkpsLh = new LabelHandler(form, true);
+            }
+            catch (Exception e) {
+             
+                errorLabel.configureErrorLabel();
+                this.willConfigure = false;
+                
+            
+            }
+
+
+           
+
+                    
             tb = new TextBox();
 
 
             // form.KeyDown += new KeyEventHandler(onKeydown);
             // form.KeyUp += new KeyEventHandler(onKeyup);
             form.Select();
-            kpsLh = new LabelHandler(form, false);
-            maxkpsLh = new LabelHandler(form, true);
+         
            
 
         }
@@ -85,6 +115,7 @@ namespace kpsWindow
                         Button button = vButtons[i];
 
                         button.Text = vKeys[i].ToString();
+                        button.ForeColor = Color.Aqua;
 
                         //  button.KeyDown += new KeyEventHandler(onKeydown);
                         //  button.KeyUp += new KeyEventHandler(onKeyup);
@@ -119,12 +150,12 @@ namespace kpsWindow
                         Button button = vButtons[i];
 
                         button.Text = vKeys[i].ToString();
-
-                       // button.KeyDown += new KeyEventHandler(onKeydown);
+                        button.ForeColor = Color.Aqua;
+                        // button.KeyDown += new KeyEventHandler(onKeydown);
                         // button.KeyUp += new KeyEventHandler(onKeyup);
 
 
-                        button.Location = new System.Drawing.Point(40 * 4 + (i - 4) * button.Size.Width, centreY);
+                        button.Location = new System.Drawing.Point(bWidth * 4 + (i - 4) * button.Size.Width, centreY);
                         form.Controls.Add(button);
 
 
@@ -151,7 +182,7 @@ namespace kpsWindow
             for (int i = 0; i < noOfKeys; i++)
             {
                 Button button = new Button();
-                button.Size = new System.Drawing.Size(40, 40);
+                button.Size = new Size(bWidth, bHeight);
                 buttons.Add(button);
             }
 
@@ -168,8 +199,8 @@ namespace kpsWindow
             for (int i = 0; i < noOfKeys; i++)
             {
                 Button button = new Button();
-                button.Size = new System.Drawing.Size(40, 40);
-                button.BackColor = Color.DimGray;
+                button.Size = new Size(bWidth, bHeight);
+               button.BackColor = Color.Black;
                 hmap.Add(vkeys[i], button);
 
 
@@ -242,16 +273,20 @@ namespace kpsWindow
             }
 
             //calculations must be done on keyup method to prevent spam increase in kps when holding down key.
-            randbutton.BackColor = Color.White;
-            randbutton.Text = "Pressed!";
-            /// randbutton.BackgroundImage = new Image();
+            //  randbutton.BackColor = Color.Transparent;
+            randbutton.BackgroundImage = img;
+
+
+
+
 
 
             //**other particular keydown event method may also be attached to this hook,
             //**so if this event is handled, only this keydown event method will run, the rest will not since this has handled the event. thus handled is set to false
-            kpsLh.configureKpsLabel();
-            maxkpsLh.configureHighestKpsLabel();
-
+            if (willConfigure) {
+                kpsLh.configureKpsLabel();
+                maxkpsLh.configureHighestKpsLabel();
+            }
 
         }
         public void onKeyup(object o, KeyEventArgs e)
@@ -309,10 +344,11 @@ namespace kpsWindow
 
 
             }
-                
-                randbutton.BackColor = Color.DimGray;
-                //Console.WriteLine("is pressed.");
-                kpsCalculator.keysPerNs++;
+            
+                randbutton.BackColor = Color.Black;
+            randbutton.BackgroundImage = null;
+            //Console.WriteLine("is pressed.");
+            kpsCalculator.keysPerNs++;
 
 
 

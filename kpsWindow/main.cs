@@ -16,7 +16,7 @@ namespace kpsWindow
         [STAThread]
         public static void Main() {
             //i need to write a file handler
-          
+            fileHandler fileH = new fileHandler();
            // Application.Run(new kpsForm(4));
             Form form = new kpsForm(4);
             form.ShowDialog();

@@ -15,7 +15,7 @@ namespace kpsWindow
         public static double kps = 0;
         public static double maxkps = 0;
         private kpsForm sform;
-        private static bool isCancelled = false;
+       
         List<Thread> threadGroup = new List<Thread>();
         
         public kpsCalculator(kpsForm form) {
@@ -40,7 +40,7 @@ namespace kpsWindow
             
             }
             Console.WriteLine(" sform closing & aborted" );
-            isCancelled = true;
+         
             keysPerNs = 0;
             kps = 0;
             maxkps = 0;
@@ -48,7 +48,7 @@ namespace kpsWindow
         }
      
         private void Sform_FormShowing(object o, EventArgs e) {
-            isCancelled = false;
+         
             Console.WriteLine("form displayed");
         }
 
@@ -57,11 +57,7 @@ namespace kpsWindow
                 for (int i = 0; i<1;i++) {
 
                     Thread.Sleep(1000);
-                    if (isCancelled == true)
-                    {
-                        Thread.CurrentThread.Abort();
-
-                    }
+                  
                     kps = keysPerNs/1;
                    
                     if (0<kps && kps<1 ) {

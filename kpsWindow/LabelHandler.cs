@@ -20,6 +20,7 @@ namespace kpsWindow
             
             label.Size = new Size(280,75);
            label.BackColor = Color.Transparent;
+           
           
             label.Font = new Font("Arial", 20);
 
@@ -43,10 +44,11 @@ namespace kpsWindow
             this.label = new Label();
 
 
-            label.Size = new Size(100, 100);
+            label.Size = new Size(280, 75);
             label.BackColor = Color.Transparent;
 
-            label.Font = new Font(FontFamily.GenericSansSerif, 20);
+
+            label.Font = new Font(FontFamily.GenericSansSerif, 10);
 
             label.AutoSize = false;
 
@@ -55,14 +57,18 @@ namespace kpsWindow
         }
 
 
+        public Label getLabel() {
 
+            return this.label;
+
+        }
         public void configureKpsLabel()
         {
 
          
            
 
-            label.Text = "Made by Lnzt\n" + kpsCalculator.kps + "kps.";
+            label.Text = "Your Kps: " + kpsCalculator.kps ;
             
             form.Controls.Add(label);
 
@@ -78,6 +84,16 @@ namespace kpsWindow
             label.Text ="Highest Kps: "+ kpsCalculator.maxkps;
 
             form.Controls.Add(label);
+        
+        }
+
+
+        public void configureErrorLabel() {
+            label.Text = "Did you format/rename your image according to readme.txt in the resource folder in your current root Directory?";
+            label.TextAlign = ContentAlignment.TopCenter;
+            label.Location = new Point((int)(form.width - label.Width) / 2, 0);
+            form.Controls.Add(label);
+        
         
         }
 
