@@ -107,7 +107,7 @@ namespace kpsWindow
             //delete all the buttons first
             for (int i = 0; i < noOfKeys; i++) {
                 form.Controls.Remove(vButtons[i]);
-                setKeyMap();
+               
             }
 
             //add back the updated buttons from hmap after setKeymap is called which references an updated keys list updated after the last onconfigKeyup eventhandler is called
@@ -122,19 +122,14 @@ namespace kpsWindow
 
 
 
-
+            setKeyMap();
             int centreX = (int)form.width / 2;
             int centreY = (int)form.height / 2;
             switch (noOfKeys)
             {
                 case 4:
-                   /* 
-                    keys.Add(Keys.D);
-                    keys.Add(Keys.F);
-                    keys.Add(Keys.J);
-                    keys.Add(Keys.K);
-                   */
-                    setKeyMap();
+               
+                   
                     var vButtons = hmap.Values.ToList();
                     var vKeys = hmap.Keys.ToList();
 
@@ -155,21 +150,12 @@ namespace kpsWindow
 
                     break;
                 case 7:
-                   /*
-                    keys.Add(Keys.S);
-                    keys.Add(Keys.D);
-                    keys.Add(Keys.F);
-                    keys.Add(Keys.Space);
-                    keys.Add(Keys.J);
-                    keys.Add(Keys.K);
-                    keys.Add(Keys.L);
-                   */
+                 
 
 
 
 
-
-                    setKeyMap();
+                  
                     vButtons = hmap.Values.ToList();
                     vKeys = hmap.Keys.ToList();
 
