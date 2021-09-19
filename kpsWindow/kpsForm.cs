@@ -1,10 +1,9 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-
+using System;
 using System.Windows.Forms;
 
-using Application = System.Windows.Forms.Application;
+
 
 
 
@@ -31,6 +30,9 @@ namespace kpsWindow
 
         private kpsGraphics hgraphics;
 
+        private hookManager hookM;
+
+
 
 
         public kpsForm(int noOfKeys)
@@ -38,12 +40,18 @@ namespace kpsWindow
             this.noOfKeys = noOfKeys;
 
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            try
+            {
+                Bitmap bmp = new Bitmap(fileHandler.path + "\\ico.jpg"); //throws exception if ico is missing
+                this.Icon = Icon.FromHandle(bmp.GetHicon());
+            }
+            catch (Exception e) {
+                    //maybe implement a default ico.jpg || throw error message popup
             
-            Bitmap bmp = new Bitmap(fileHandler.path + "\\ico.jpg");
-
+            }
             this.bgpath = fileHandler.path + "\\bgimg.jpg";
 
-            this.Icon = Icon.FromHandle(bmp.GetHicon());
+            
            
 
             pBox = new PictureBox();
@@ -61,7 +69,8 @@ namespace kpsWindow
         }
 
         internal kpsGraphics Hgraphics { get => hgraphics; set => hgraphics = value; }
-
+        internal hookManager HookM { get =>  hookM; set => hookM = value; }
+        
         private void InitializeComponents()
         {
            
@@ -69,10 +78,13 @@ namespace kpsWindow
 
             this.ClientSize = new Size(this.width,this.height);
         
-            kpsbuttonHandler bhandler = new kpsbuttonHandler(this);
+           kpsbuttonHandler bhandler = new kpsbuttonHandler(this);
             kpsCalculator kpsc = new kpsCalculator(this);
             bhandler.initializeButtonKeys();
-            hookManager hookM = new hookManager(this, bhandler);
+           HookM = new hookManager(this, bhandler);
+
+            
+
             this.Text = "Kps Logger";
 
             this.MaximizeBox = false;

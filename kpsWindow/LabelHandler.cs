@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using System.Drawing;
 
 namespace kpsWindow
@@ -32,7 +27,7 @@ namespace kpsWindow
             }
             else
             {
-                label.TextAlign = ContentAlignment.TopCenter;
+                label.TextAlign = ContentAlignment.MiddleCenter;
                 label.Location = new Point((int) (form.width-label.Width)/ 2, 0);
             }
             
@@ -88,9 +83,9 @@ namespace kpsWindow
         }
 
 
-        public void configureErrorLabel() {
-            label.Text = "Did you format/rename your image according to readme.txt in the resource folder in your current root Directory?";
-            label.TextAlign = ContentAlignment.TopCenter;
+        public void configurationLabel() {
+            label.Text = "Now configuring keys. Press the new keys you want to configure from left to right";
+            label.TextAlign = ContentAlignment.MiddleCenter;
             label.Location = new Point((int)(form.width - label.Width) / 2, 0);
             form.Controls.Add(label);
         

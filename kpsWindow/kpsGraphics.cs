@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
-using System.Windows.Forms;
+
 
 namespace kpsWindow
 {
@@ -14,14 +10,25 @@ namespace kpsWindow
         //private HashSet<Bitmap> keyImgMap;
         private kpsForm form;
 
-        private cBoxWrapper cBw;
+        private cBoxWrapper cBw1;
+
+        private cBoxWrapper cBw2;
         
         
         public kpsGraphics(string imgpath,int width, int height, kpsForm form) {
-            bgImg = new Bitmap(Image.FromFile(imgpath), new Size(width,height)); 
-            this.form = form;
-            
-            displayDefBg();
+
+                this.form = form;
+            try
+            {
+                bgImg = new Bitmap(Image.FromFile(imgpath), new Size(width, height)); //throws error if bgimg is missing
+                
+
+                displayDefBg();
+            }
+            catch (Exception e) {
+                //maybe implement a default bgimg.jpg || throw error message popup
+            }
+
             loadCheckBox();
         
         }
@@ -42,21 +49,27 @@ namespace kpsWindow
 
         }
         private void loadCheckBox() {
-            this.cBw = new cBoxWrapper(form);
+            this.cBw1 = new cBoxWrapper(form, "7 keys");
 
         }
-
-        public cBoxWrapper getCboxWrapper() {
-
-            return this.cBw;
-
-        }
+     
+     
 
         public kpsForm getForm() {
 
             return this.form;
 
         }
+
+        public cBoxWrapper getCboxWrapper1()
+        {
+
+            return this.cBw1;
+        }
+
+
+
+       
 
 
        

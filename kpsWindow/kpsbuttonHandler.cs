@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using SystemColors = System.Drawing.SystemColors;
@@ -24,16 +22,20 @@ namespace kpsWindow
         private LabelHandler kpsLh;
         private LabelHandler maxkpsLh;
 
-        private LabelHandler errorLabel;
+        private LabelHandler configLabel;
         private Image img;
         private Bitmap bmap;
+        private CheckBox cBox;
 
-        private bool willConfigure = true;
+        private bool useImg = true;
 
         private int bHeight;
         private int bWidth;
 
-        private kpsGraphics kpsGraphics;
+        private int configButtonCount = 0;
+        private bool inConfigMode = false;
+
+        private kpsGraphics kpsGraphics; //only assign this/to this if 2nd overload is used
 
         public kpsbuttonHandler(kpsForm form)
         {
@@ -41,22 +43,24 @@ namespace kpsWindow
             this.bWidth = 40;
             this.form = form;
             this.noOfKeys = form.noOfKeys;
-            this.errorLabel = new LabelHandler(form);
+            this.cBox = form.Hgraphics.getCboxWrapper1().getCbox();
+            kpsLh = new LabelHandler(form, false);
+            maxkpsLh = new LabelHandler(form, true);
+            configLabel = new LabelHandler(form);
 
-
+            this.keys = fileHandler.GetKeys(noOfKeys);
 
             try
             {
                 img = Image.FromFile(fileHandler.path + "\\presseffect.png");
                 this.img = (Image)new Bitmap(img, new Size(bWidth, bHeight));
 
-                kpsLh = new LabelHandler(form, false);
-                maxkpsLh = new LabelHandler(form, true);
+              
             }
             catch (Exception e) {
              
-                errorLabel.configureErrorLabel();
-                this.willConfigure = false;
+           
+                this.useImg = false;
                 
             
             }
@@ -71,7 +75,9 @@ namespace kpsWindow
             // form.KeyDown += new KeyEventHandler(onKeydown);
             // form.KeyUp += new KeyEventHandler(onKeyup);
             form.Select();
-         
+
+
+            loadConfigButton();
            
 
         }
@@ -85,9 +91,31 @@ namespace kpsWindow
         }
 
 
-       
 
 
+
+
+
+
+
+
+        public void reInitButtonKeys() {
+
+
+            var vButtons = hmap.Values.ToList();
+
+            //delete all the buttons first
+            for (int i = 0; i < noOfKeys; i++) {
+                form.Controls.Remove(vButtons[i]);
+                setKeyMap();
+            }
+
+            //add back the updated buttons from hmap after setKeymap is called which references an updated keys list updated after the last onconfigKeyup eventhandler is called
+            //where configbuttoncount == noOfkeys
+            initializeButtonKeys();
+        
+        
+        }
 
         public void initializeButtonKeys()
         {
@@ -100,12 +128,12 @@ namespace kpsWindow
             switch (noOfKeys)
             {
                 case 4:
-                    setKeys();
-                    keys.Add(Keys.X);
-                    keys.Add(Keys.C);
-                    keys.Add(Keys.N);
-                    keys.Add(Keys.M);
-
+                   /* 
+                    keys.Add(Keys.D);
+                    keys.Add(Keys.F);
+                    keys.Add(Keys.J);
+                    keys.Add(Keys.K);
+                   */
                     setKeyMap();
                     var vButtons = hmap.Values.ToList();
                     var vKeys = hmap.Keys.ToList();
@@ -115,7 +143,7 @@ namespace kpsWindow
                         Button button = vButtons[i];
 
                         button.Text = vKeys[i].ToString();
-                        button.ForeColor = Color.Aqua;
+                        button.ForeColor = Color.LawnGreen;
 
                         //  button.KeyDown += new KeyEventHandler(onKeydown);
                         //  button.KeyUp += new KeyEventHandler(onKeyup);
@@ -127,7 +155,7 @@ namespace kpsWindow
 
                     break;
                 case 7:
-                    setKeys();
+                   /*
                     keys.Add(Keys.S);
                     keys.Add(Keys.D);
                     keys.Add(Keys.F);
@@ -135,7 +163,7 @@ namespace kpsWindow
                     keys.Add(Keys.J);
                     keys.Add(Keys.K);
                     keys.Add(Keys.L);
-
+                   */
 
 
 
@@ -150,7 +178,7 @@ namespace kpsWindow
                         Button button = vButtons[i];
 
                         button.Text = vKeys[i].ToString();
-                        button.ForeColor = Color.Aqua;
+                        button.ForeColor = Color.LawnGreen;
                         // button.KeyDown += new KeyEventHandler(onKeydown);
                         // button.KeyUp += new KeyEventHandler(onKeyup);
 
@@ -192,7 +220,10 @@ namespace kpsWindow
         }
         private Dictionary<Keys, Button> setKeyMap()
         {
+            if (hmap.Count != 0) {
+                hmap.Clear();
 
+            }
             var vkeys = keys;
 
 
@@ -209,18 +240,51 @@ namespace kpsWindow
             return hmap;
         }
         //used before setKeyMap() is called.
-        private List<Keys> setKeys()
+        private void loadConfigButton()
         {
 
-            keys = new List<Keys>();
-            return keys;
+            Button configbutton = new Button();
+            configbutton.Size = new Size(100, 20); //45,20 default non kps-button size
+                                                  // configbutton.Location = new Point(form.width, form.height - configbutton.Height);
+            configbutton.Text = "Key Config";
+            configbutton.BackColor = Color.Black;
+            configbutton.ForeColor = Color.LawnGreen;
+            configbutton.Location = new Point(form.width-configbutton.Size.Width,0);
+
+            configbutton.MouseClick += onMouseClick;
+
+            form.Controls.Add(configbutton);
+
         }
 
-   
+        private void onMouseClick(Object o, MouseEventArgs e)
+        {
+            if (inConfigMode == false) {
+                keys.Clear();
+                form.HookM.Unsubscribe(false);
+
+                form.Controls.Remove(kpsLh.getLabel());
+                form.Controls.Remove(maxkpsLh.getLabel());
+                form.Controls.Remove(cBox); //needs testing
+
+
+                configLabel.configurationLabel();
+                form.HookM.SubscribeConfig();
+                inConfigMode = true;
+            }
+
+
+
+
+
+
+        }
+
+
 
         public void onKeydown(Object o, KeyEventArgs e)
         {
-
+           
             var vKeys = hmap.Keys.ToList();
             var vButtons = hmap.Values.ToList();
 
@@ -274,8 +338,14 @@ namespace kpsWindow
 
             //calculations must be done on keyup method to prevent spam increase in kps when holding down key.
             //  randbutton.BackColor = Color.Transparent;
-            randbutton.BackgroundImage = img;
-
+            if (useImg)
+            {
+                randbutton.BackgroundImage = img;
+            }
+            else {
+                randbutton.ForeColor = Color.White;
+            }
+            
 
 
 
@@ -283,11 +353,53 @@ namespace kpsWindow
 
             //**other particular keydown event method may also be attached to this hook,
             //**so if this event is handled, only this keydown event method will run, the rest will not since this has handled the event. thus handled is set to false
-            if (willConfigure) {
+           
                 kpsLh.configureKpsLabel();
                 maxkpsLh.configureHighestKpsLabel();
-            }
+            
 
+        }
+
+        //event handler 'onkeypress' is only used for configuring keys
+        public void onConfigKeyUp(object o, KeyEventArgs e) {
+
+            var vbuttons = hmap.Values.ToList();
+
+            Console.WriteLine(keys);
+            Keys eKey = e.KeyCode;
+            keys.Add(eKey);
+            vbuttons[configButtonCount].Select();
+            configButtonCount++;
+            
+           // Console.WriteLine(keys);
+            Console.WriteLine(eKey);
+            
+
+            if (configButtonCount == noOfKeys) {
+                Console.WriteLine(configButtonCount);
+                form.HookM.unSubscribeConfig();
+
+                form.Controls.Remove(configLabel.getLabel());
+                reInitButtonKeys();
+                form.Controls.Add(cBox);
+                cBox.Select();
+                form.Controls.Add(kpsLh.getLabel());
+                form.Controls.Add(maxkpsLh.getLabel());
+               
+                form.HookM.Subscribe();
+
+                fileHandler.updateKeyData(noOfKeys,keys);
+                
+
+                configButtonCount = 0;
+                inConfigMode = false;
+                keys.Clear();
+
+            }
+        
+        
+        
+        
         }
         public void onKeyup(object o, KeyEventArgs e)
         {
@@ -346,7 +458,11 @@ namespace kpsWindow
             }
             
                 randbutton.BackColor = Color.Black;
-            randbutton.BackgroundImage = null;
+            if (useImg) {
+                randbutton.BackgroundImage = null;
+            }
+            else { randbutton.ForeColor = Color.LawnGreen;
+            }
             //Console.WriteLine("is pressed.");
             kpsCalculator.keysPerNs++;
 
