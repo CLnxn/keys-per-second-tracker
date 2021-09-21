@@ -23,7 +23,7 @@ namespace kpsWindow
             Console.WriteLine(path);
             if (!File.Exists(path))
             {
-                Console.WriteLine("doesnt exist");
+                //Console.WriteLine("doesnt exist");
 
                 Directory.CreateDirectory(path);
 
@@ -69,7 +69,7 @@ namespace kpsWindow
 
             if (!File.Exists(path))
             {
-                Console.WriteLine("doesnt exist");
+               // Console.WriteLine("doesnt exist");
 
                 Directory.CreateDirectory(path);
 
@@ -122,12 +122,14 @@ namespace kpsWindow
         }
         public static fKeySet readKeyData()
         {
+          
+            
 
 
-            String jsonStr = File.ReadAllText(jpath);
             fKeySet kSet = null;
             try
-            { 
+            {
+                string jsonStr = File.ReadAllText(jpath);
                 kSet = JsonSerializer.Deserialize<fKeySet>(jsonStr);
             }
             catch (Exception) {

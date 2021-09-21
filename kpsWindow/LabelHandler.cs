@@ -7,28 +7,32 @@ namespace kpsWindow
     {
         private Label label;
         private kpsForm form;
+
+
+
         public LabelHandler(kpsForm form,bool isMaxKps)
         {
             this.form = form;
             this.label = new Label();
 
             
-            label.Size = new Size(280,75);
+            label.Size = new Size(140,35);
            label.BackColor = Color.Transparent;
            
           
-            label.Font = new Font("Arial", 20);
+            label.Font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold);
+            
 
             label.AutoSize = false;
             if (isMaxKps)
             {
-                label.TextAlign = ContentAlignment.BottomCenter;
-                label.Location = new Point((int) (form.width-label.Width)/2,form.height-label.Size.Height);
+                label.TextAlign = ContentAlignment.MiddleCenter;
+                label.Location = new Point((int) (form.width-label.Width),form.height-label.Size.Height);
             }
             else
             {
-                label.TextAlign = ContentAlignment.MiddleCenter;
-                label.Location = new Point((int) (form.width-label.Width)/ 2, 0);
+                label.TextAlign = ContentAlignment.BottomCenter;
+                label.Location = new Point((int) (form.width-label.Width)/ 2, 10);
             }
             
 
@@ -39,17 +43,18 @@ namespace kpsWindow
             this.label = new Label();
 
 
-            label.Size = new Size(280, 75);
+           
             label.BackColor = Color.Transparent;
 
 
-            label.Font = new Font(FontFamily.GenericSansSerif, 10);
+           
 
             label.AutoSize = false;
 
 
 
         }
+
 
 
         public Label getLabel() {
@@ -84,6 +89,8 @@ namespace kpsWindow
 
 
         public void configurationLabel() {
+            label.Font = new Font(FontFamily.GenericSansSerif, 10);
+            label.Size = new Size(280, 75);
             label.Text = "Now configuring keys. Press the new keys you want to configure from left to right";
             label.TextAlign = ContentAlignment.MiddleCenter;
             label.Location = new Point((int)(form.width - label.Width) / 2, 0);
@@ -91,6 +98,15 @@ namespace kpsWindow
         
         
         }
+        public void configureAvgKpsLabel() {
+            label.Font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold);
+            label.Size = new Size(140, 35);
+            label.Text = "Average kps: " + kpsCalculator.avgkps;
+          
+             label.TextAlign = ContentAlignment.MiddleCenter;
+             label.Location = new Point(0,form.height-label.Size.Height);
+            form.Controls.Add(label);
 
+        }
     }
 }

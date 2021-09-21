@@ -13,7 +13,7 @@ namespace kpsWindow
             
             fileHandler fileH = new fileHandler();
          
-            Form form = new kpsForm(4);
+            kpsForm form = new kpsForm(4);
             form.ShowDialog();
          
 

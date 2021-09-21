@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-using SystemColors = System.Drawing.SystemColors;
+
 using System.Drawing;
+
 
 namespace kpsWindow
 {
@@ -19,10 +20,7 @@ namespace kpsWindow
         private TextBox tb;
 
         private kpsForm form;
-        private LabelHandler kpsLh;
-        private LabelHandler maxkpsLh;
-
-        private LabelHandler configLabel;
+        public LabelHandler kpsLh, maxkpsLh, configLabel, avgkpsLh;
         private Image img;
         private Bitmap bmap;
         private CheckBox cBox;
@@ -33,7 +31,7 @@ namespace kpsWindow
         private int bWidth;
 
         private int configButtonCount = 0;
-        private bool inConfigMode = false;
+        public static bool inConfigMode = false;
 
         private kpsGraphics kpsGraphics; //only assign this/to this if 2nd overload is used
 
@@ -46,6 +44,9 @@ namespace kpsWindow
             this.cBox = form.Hgraphics.getCboxWrapper1().getCbox();
             kpsLh = new LabelHandler(form, false);
             maxkpsLh = new LabelHandler(form, true);
+            avgkpsLh = new LabelHandler(form);
+           
+            
             configLabel = new LabelHandler(form);
 
             this.keys = fileHandler.GetKeys(noOfKeys);
@@ -78,6 +79,7 @@ namespace kpsWindow
 
 
             loadConfigButton();
+            loadResetButton();
            
 
         }
@@ -113,7 +115,7 @@ namespace kpsWindow
             //add back the updated buttons from hmap after setKeymap is called which references an updated keys list updated after the last onconfigKeyup eventhandler is called
             //where configbuttoncount == noOfkeys
             initializeButtonKeys();
-        
+           
         
         }
 
@@ -138,12 +140,13 @@ namespace kpsWindow
                         Button button = vButtons[i];
 
                         button.Text = vKeys[i].ToString();
+                        button.Font = new Font(FontFamily.GenericSansSerif, 9);
                         button.ForeColor = Color.LawnGreen;
 
                         //  button.KeyDown += new KeyEventHandler(onKeydown);
                         //  button.KeyUp += new KeyEventHandler(onKeyup);
 
-                        button.Location = new System.Drawing.Point(centreX + (i - 2) * button.Size.Width, centreY);
+                        button.Location = new Point(centreX + (i - 2) * button.Size.Width, centreY);
                         form.Controls.Add(button);
                     }
 
@@ -164,6 +167,10 @@ namespace kpsWindow
                         Button button = vButtons[i];
 
                         button.Text = vKeys[i].ToString();
+                        if (i != 3) {
+                            button.Font = new Font(FontFamily.GenericSansSerif, 9);
+                        }
+                        else { button.Font = new Font(FontFamily.GenericSansSerif, 7); }
                         button.ForeColor = Color.LawnGreen;
                         // button.KeyDown += new KeyEventHandler(onKeydown);
                         // button.KeyUp += new KeyEventHandler(onKeyup);
@@ -190,19 +197,41 @@ namespace kpsWindow
         }
 
         //deprecated
-        private List<Button> setButtons()
+        private void loadResetButton()
         {
+            
+            Button resetButton = new Button();
+            resetButton.Size = new Size(100, 20);
+            resetButton.Text = "Reset";
 
-            for (int i = 0; i < noOfKeys; i++)
-            {
-                Button button = new Button();
-                button.Size = new Size(bWidth, bHeight);
-                buttons.Add(button);
+            resetButton.ForeColor = Color.LawnGreen;
+            resetButton.BackColor = Color.Black;
+
+            resetButton.Location = new Point(form.width-resetButton.Size.Width, resetButton.Size.Height);
+           
+            resetButton.MouseClick += onMouseClickReset;
+
+            form.Controls.Add(resetButton);
+
+
+        }
+
+        private void onMouseClickReset(Object o, MouseEventArgs e) {
+            Button resetB = null;
+            if (o is Button) {
+                resetB = (Button)o;
             }
 
-            return buttons;
+            form.Kcalc.forceReset();
+
+            form.Kcalc.start();
 
 
+            this.cBox.Select();
+
+            
+        
+        
         }
         private Dictionary<Keys, Button> setKeyMap()
         {
@@ -340,8 +369,7 @@ namespace kpsWindow
             //**other particular keydown event method may also be attached to this hook,
             //**so if this event is handled, only this keydown event method will run, the rest will not since this has handled the event. thus handled is set to false
            
-                kpsLh.configureKpsLabel();
-                maxkpsLh.configureHighestKpsLabel();
+            
             
 
         }
@@ -460,6 +488,11 @@ namespace kpsWindow
 
 
         }
+
+      
+
+
+     
 
     }
 

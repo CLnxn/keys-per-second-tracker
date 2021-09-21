@@ -32,7 +32,9 @@ namespace kpsWindow
 
         private hookManager hookM;
 
+        private kpsbuttonHandler bhandler;
 
+        private kpsCalculator kpsc;
 
 
         public kpsForm(int noOfKeys)
@@ -70,6 +72,10 @@ namespace kpsWindow
 
         internal kpsGraphics Hgraphics { get => hgraphics; set => hgraphics = value; }
         internal hookManager HookM { get =>  hookM; set => hookM = value; }
+
+        internal kpsbuttonHandler Bhandler { get => bhandler; set => bhandler = value; }
+
+        internal kpsCalculator Kcalc { get => kpsc; set => kpsc = value; }
         
         private void InitializeComponents()
         {
@@ -78,10 +84,11 @@ namespace kpsWindow
 
             this.ClientSize = new Size(this.width,this.height);
         
-           kpsbuttonHandler bhandler = new kpsbuttonHandler(this);
-            kpsCalculator kpsc = new kpsCalculator(this);
+           bhandler = new kpsbuttonHandler(this);
             bhandler.initializeButtonKeys();
-           HookM = new hookManager(this, bhandler);
+            HookM = new hookManager(this, bhandler);
+           kpsc = new kpsCalculator(this);
+           // HookM = new hookManager(this, bhandler);
 
             
 
