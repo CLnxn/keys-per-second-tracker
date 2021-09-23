@@ -13,7 +13,8 @@ namespace kpsWindow
         private cBoxWrapper cBw1;
 
         private cBoxWrapper cBw2;
-        
+
+    
         
         public kpsGraphics(string imgpath,int width, int height, kpsForm form) {
 
@@ -32,6 +33,9 @@ namespace kpsWindow
             loadCheckBox();
         
         }
+
+        
+        
 
         private void displayDefBg() {
             if (bgImg != null)

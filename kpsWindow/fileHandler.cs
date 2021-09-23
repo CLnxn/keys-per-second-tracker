@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Text.Json;
+using System.Linq;
 
 namespace kpsWindow
 {
@@ -94,16 +95,16 @@ namespace kpsWindow
 
 
             var fkeyset = readKeyData();
-         
 
+      
 
             switch (vnoOfKeys)
             {
                 case 4:
-                    fkeyset.fourk = vkeys;
+                        fkeyset.fourk = vkeys;
                     break;
                 case 7:
-                    fkeyset.sevenk = vkeys;
+                        fkeyset.sevenk = vkeys;
                     break;
 
 
@@ -120,6 +121,7 @@ namespace kpsWindow
 
 
         }
+     
         public static fKeySet readKeyData()
         {
           
@@ -127,21 +129,32 @@ namespace kpsWindow
 
 
             fKeySet kSet = null;
-            try
-            {
-                string jsonStr = File.ReadAllText(jpath);
-                kSet = JsonSerializer.Deserialize<fKeySet>(jsonStr);
-            }
-            catch (Exception) {
+         
+                try
+                {
+                    string jsonStr = File.ReadAllText(jpath);
+                    kSet = JsonSerializer.Deserialize<fKeySet>(jsonStr);
+                Console.WriteLine(kSet.fourk.GroupBy(x => x).Any(xHeader => xHeader.Count() > 1));
+                
+                if (kSet.fourk.GroupBy(x =>x).Any(xHeader => xHeader.Count() > 1) ||
+                    kSet.sevenk.GroupBy(x => x).Any(xHeader => xHeader.Count() > 1)) {
+                    Console.WriteLine("duplicates detected"); // shd only occur if the kd.json is mistakenly edited
+                    throw new Exception();
+                   
+                }
+                }
+                catch (Exception)
+                {
 
 
-                kSet = new fKeySet {
-                    sevenk = new List<Keys> { Keys.S, Keys.D, Keys.F, Keys.Space, Keys.J, Keys.K, Keys.L },
+                    kSet = new fKeySet
+                    {
+                        sevenk = new List<Keys> { Keys.S, Keys.D, Keys.F, Keys.Space, Keys.J, Keys.K, Keys.L },
 
-                    fourk = new List<Keys> { Keys.D, Keys.F, Keys.J, Keys.K }
+                        fourk = new List<Keys> { Keys.D, Keys.F, Keys.J, Keys.K }
 
-                };
-            }
+                    };
+                }
             
             
 
@@ -149,6 +162,8 @@ namespace kpsWindow
 
         }
 
+
+      
         public static List<Keys> GetKeys(int noOfKeys) {
 
             var fkeyset = readKeyData();

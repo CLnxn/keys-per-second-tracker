@@ -119,6 +119,7 @@
     <Compile Include="kpsForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="kpsGraph.cs" />
     <Compile Include="kpsGraphics.cs" />
     <Compile Include="LabelHandler.cs" />
     <Compile Include="main.cs" />
@@ -147,10 +148,16 @@
     <Reference Include="System.Json, Version=2.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Json.4.7.1\lib\net461\System.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.Linq, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.4.3.0\lib\net463\System.Linq.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Text.Json, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup />

@@ -16,7 +16,7 @@ namespace kpsWindow
             this.label = new Label();
 
             
-            label.Size = new Size(140,35);
+            
            label.BackColor = Color.Transparent;
            
           
@@ -26,11 +26,13 @@ namespace kpsWindow
             label.AutoSize = false;
             if (isMaxKps)
             {
+                label.Size = new Size(140, 35);
                 label.TextAlign = ContentAlignment.MiddleCenter;
                 label.Location = new Point((int) (form.width-label.Width),form.height-label.Size.Height);
             }
             else
             {
+                label.Size = new Size(140, 50);
                 label.TextAlign = ContentAlignment.BottomCenter;
                 label.Location = new Point((int) (form.width-label.Width)/ 2, 10);
             }

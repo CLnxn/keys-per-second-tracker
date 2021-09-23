@@ -24,16 +24,20 @@ namespace kpsWindow
         private Image img;
         private Bitmap bmap;
         private CheckBox cBox;
+        private Button graphB;
 
         private bool useImg = true;
+
 
         private int bHeight;
         private int bWidth;
 
         private int configButtonCount = 0;
         public static bool inConfigMode = false;
+        public static bool isGraphOpen = false;
 
         private kpsGraphics kpsGraphics; //only assign this/to this if 2nd overload is used
+        private kpsGraph kpsGraph;
 
         public kpsbuttonHandler(kpsForm form)
         {
@@ -42,6 +46,7 @@ namespace kpsWindow
             this.form = form;
             this.noOfKeys = form.noOfKeys;
             this.cBox = form.Hgraphics.getCboxWrapper1().getCbox();
+            
             kpsLh = new LabelHandler(form, false);
             maxkpsLh = new LabelHandler(form, true);
             avgkpsLh = new LabelHandler(form);
@@ -77,10 +82,11 @@ namespace kpsWindow
             // form.KeyUp += new KeyEventHandler(onKeyup);
             form.Select();
 
-
+            
             loadConfigButton();
             loadResetButton();
-           
+            loadGraphButton();   //pressing button right before 1st thread starts iterating throws an empty window
+
 
         }
 
@@ -114,6 +120,7 @@ namespace kpsWindow
 
             //add back the updated buttons from hmap after setKeymap is called which references an updated keys list updated after the last onconfigKeyup eventhandler is called
             //where configbuttoncount == noOfkeys
+           
             initializeButtonKeys();
            
         
@@ -125,6 +132,7 @@ namespace kpsWindow
 
 
             setKeyMap();
+            Console.WriteLine("reinitialising buttons");
             int centreX = (int)form.width / 2;
             int centreY = (int)form.height / 2;
             switch (noOfKeys)
@@ -137,6 +145,7 @@ namespace kpsWindow
 
                     for (int i = 0; i < 4; i++)
                     {
+                      
                         Button button = vButtons[i];
 
                         button.Text = vKeys[i].ToString();
@@ -222,9 +231,9 @@ namespace kpsWindow
                 resetB = (Button)o;
             }
 
-            form.Kcalc.forceReset();
+            form.Kcalc.forceReset(true,true);
 
-            form.Kcalc.start();
+           
 
 
             this.cBox.Select();
@@ -235,25 +244,84 @@ namespace kpsWindow
         }
         private Dictionary<Keys, Button> setKeyMap()
         {
-            if (hmap.Count != 0) {
+            if (hmap.Count != 0)
+            {
+             
                 hmap.Clear();
 
             }
             var vkeys = keys;
-
-
-            for (int i = 0; i < noOfKeys; i++)
+            // Console.WriteLine(keys);
+            
+                for (int i = 0; i < noOfKeys; i++)
             {
                 Button button = new Button();
                 button.Size = new Size(bWidth, bHeight);
                button.BackColor = Color.Black;
-                hmap.Add(vkeys[i], button);
+              
+               
 
-
+                   
+                    hmap.Add(vkeys[i], button);
+               
             }
+            
+          
+           
+
 
             return hmap;
         }
+
+
+
+        private void loadGraphButton() {
+
+           graphB = new Button();
+          
+            graphB.Size = new Size(45, 20);
+            graphB.Text = "Graph";
+
+            graphB.ForeColor = Color.LawnGreen;
+            graphB.BackColor = Color.Black;
+            
+
+            graphB.Location = new Point(0, graphB.Size.Height);
+
+           
+
+            graphB.MouseClick += onGraphButtonClick;
+
+                form.Controls.Add(graphB);
+           
+        
+        
+        
+        }
+
+
+        private void onGraphButtonClick(Object o, MouseEventArgs e) {
+            // might have to be done on a separate thread
+            cBox.Select();
+            if (!isGraphOpen && !inConfigMode) {
+                Console.WriteLine("opening graph form");
+                isGraphOpen = true; //if put after instantiating kpsGraph, isGraphOpen will wait for kpsGraph's formclosing event to fire before setting it back to true; problematic
+                this.kpsGraph = new kpsGraph(form, true);
+                
+            }
+
+
+
+        }
+
+
+        public kpsGraph getGraph() {
+
+            return this.kpsGraph;
+
+        }
+
+
         //used before setKeyMap() is called.
         private void loadConfigButton()
         {
@@ -281,7 +349,8 @@ namespace kpsWindow
                 form.Controls.Remove(kpsLh.getLabel());
                 form.Controls.Remove(maxkpsLh.getLabel());
                 form.Controls.Remove(cBox); //needs testing
-
+                form.Controls.Remove(avgkpsLh.getLabel());
+                form.Controls.Remove(graphB);
 
                 configLabel.configurationLabel();
                 form.HookM.SubscribeConfig();
@@ -377,10 +446,18 @@ namespace kpsWindow
         //event handler 'onkeypress' is only used for configuring keys
         public void onConfigKeyUp(object o, KeyEventArgs e) {
 
-            var vbuttons = hmap.Values.ToList();
+            
 
             Console.WriteLine(keys);
             Keys eKey = e.KeyCode;
+            if (keys.Contains(eKey)) {
+                Console.WriteLine("duplicated detected");
+                return;
+               
+            }
+
+
+            var vbuttons = hmap.Values.ToList();
             keys.Add(eKey);
             vbuttons[configButtonCount].Select();
             configButtonCount++;
@@ -396,10 +473,15 @@ namespace kpsWindow
                 form.Controls.Remove(configLabel.getLabel());
                 reInitButtonKeys();
                 form.Controls.Add(cBox);
+                form.Controls.Add(graphB);
+
                 cBox.Select();
                 form.Controls.Add(kpsLh.getLabel());
                 form.Controls.Add(maxkpsLh.getLabel());
-               
+                form.Controls.Add(avgkpsLh.getLabel());
+                
+
+
                 form.HookM.Subscribe();
 
                 fileHandler.updateKeyData(noOfKeys,keys);

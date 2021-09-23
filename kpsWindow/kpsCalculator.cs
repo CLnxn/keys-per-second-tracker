@@ -13,8 +13,12 @@ namespace kpsWindow
       
         public double totalkeys = 0;
 
+        public List<double> kpsList = new List<double>();
+        public int maxSize = 11; //size of list inclusive of zero index. 
+        int samplesize = 3;  //number of acceptable in-a-row zeros
+        int resetAvgSize = 10; //number of accpetable in-a-row zeros before resetting avgkps
         private kpsForm sform;
-
+       
 
         private LabelHandler kpsLh, maxkpsLh, avgkpsLh;
 
@@ -39,7 +43,7 @@ namespace kpsWindow
           
 
             sform.FormClosing += Sform_FormClosing;
-            // sform.Shown += Sform_FormShowing;
+           
 
 
             this.kpsLh = sform.Bhandler.kpsLh;
@@ -59,11 +63,13 @@ namespace kpsWindow
         private void Sform_FormClosing(object sender, FormClosingEventArgs e)
         {
 
-            forceReset();
+            forceReset(true,false);
+            Console.WriteLine(" sform closing & aborted");
         }
 
 
-        public void forceReset() { 
+        public void forceReset(bool resetMax, bool restart) {
+            Console.WriteLine("resetting.");
 
           var threads = this.threadGroup;
             foreach (Thread t in threads) {
@@ -71,57 +77,122 @@ namespace kpsWindow
             
             }
             threadGroup.Clear();
-            Console.WriteLine(" sform closing & aborted" );
+            
+
+            kpsList.Clear();
          
             keysPerNs = 0;
             kps = 0;
             totalkeys = 0;
-            maxkps = 0;
+            if (resetMax) {
+                maxkps = 0;
+            }
             avgkps = 0;
-        
-        
-        
+            sform.FormClosing -= Sform_FormClosing;
+            if (restart) {
+                start();
+                Console.WriteLine("resetting done.");
+            }
+           
+
         }
         
 
-        //object o, EventArgs e
-        private void Sform_FormShowing() {
-         
-            Console.WriteLine("form displayed");
-        }
+      
         private void updateLabels() {
             kpsLh.configureKpsLabel();
             maxkpsLh.configureHighestKpsLabel();
             avgkpsLh.configureAvgKpsLabel();
-        
+          
         }
+        
+
+     
+
         public void scheduledDump(int threadno) {
+          
+            
             try {
+
+                upLabel update = updateLabels;
+                int setno = threadno;
                 int baseno = 10000;
+             
                 for (int i = 1; i<baseno+1;i++) {
 
+                  
                     Thread.Sleep(1000);
                   
                     kps = keysPerNs/1;
+
                     totalkeys += kps;
-                    avgkps = Math.Round(totalkeys / (threadno*baseno + i),1);
-                    
+
+
                     Console.WriteLine($"Thread #{threadno+1} // iteration #" + (threadno * baseno + i));
 
                     if (0<kps && kps<1 ) {
                         kps = 1;
                     }
 
+
+
+                    kpsList.Add(kps);
+                   
+                    if (kpsList.Count > maxSize) {
+                        kpsList.RemoveRange(0,kpsList.Count- maxSize);
+                    }
+                   
+                    if (kpsList.Count >= samplesize) {
+                        int k = 0;
+                       
+                        var kList = kpsList;
+                        
+                        for (int j=0; j< kpsList.Count;j++) {
+
+                            if (kList[kList.Count - 1 - j] == 0)
+                            {
+
+                                k++;
+
+                            }
+                            else { 
+                                break;
+                            }
+                        
+
+
+                        }
+                        // if there are at least samplesize zeros in a row, avgkps calculation will ignore the current zero and the totaltime denominator is unchanged.
+                        if (k >= samplesize)
+                        {
+                            i--;
+                            if (k == resetAvgSize) {
+                                Thread temp = new Thread(() => forceReset(false, true));
+                                temp.Start();
+                                     
+                            }
+
+                        }
+                        
+                           
+                            avgkps = Math.Round(totalkeys / (setno * baseno + i), 1);
+                        
+
+
+                    
+                    }
+
+
+                    
+
                     if (kps>maxkps) {
                         maxkps = kps;
 
                     }
 
+
                     //do stuff after every 1s:
-                    
 
-
-                    upLabel update = updateLabels;
 
                     try
                     {

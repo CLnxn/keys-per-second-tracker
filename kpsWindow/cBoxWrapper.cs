@@ -25,7 +25,7 @@ namespace kpsWindow
             cBox.BackColor = Color.Black;
             cBox.ForeColor = Color.LawnGreen;
            
-            cBox.Size = new System.Drawing.Size(45,20);
+            cBox.Size = new Size(45,20);
             cBox.AutoCheck = false;
             cBox.Location = new Point(0,0);
             //cBox.Location = new System.Drawing.Point(0,form.height-cBox.Size.Height);

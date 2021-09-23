@@ -43,9 +43,9 @@ namespace kpsWindow
 
         public void unSubscribeConfig() {
             m_GlobalHook.KeyUp -= kpsHbutton.onConfigKeyUp;
-
+           
         }
-      
+        
         
         private void GlobalHookMouseDownExt(object sender, MouseEventExtArgs e)
         {
