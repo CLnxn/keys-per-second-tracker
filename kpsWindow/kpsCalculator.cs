@@ -166,11 +166,13 @@ namespace kpsWindow
                         if (k >= samplesize)
                         {
                             i--;
-                            if (k == resetAvgSize) {
+                            if (k >= resetAvgSize && !kpsbuttonHandler.inPlayMode) //inplaymode ensures avg isnt auto reset after resetavgsize in-a-row zeros
+                            {
                                 Thread temp = new Thread(() => forceReset(false, true));
                                 temp.Start();
-                                     
+
                             }
+                            
 
                         }
                         

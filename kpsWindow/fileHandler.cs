@@ -134,7 +134,7 @@ namespace kpsWindow
                 {
                     string jsonStr = File.ReadAllText(jpath);
                     kSet = JsonSerializer.Deserialize<fKeySet>(jsonStr);
-                Console.WriteLine(kSet.fourk.GroupBy(x => x).Any(xHeader => xHeader.Count() > 1));
+               // Console.WriteLine(kSet.fourk.GroupBy(x => x).Any(xHeader => xHeader.Count() > 1));
                 
                 if (kSet.fourk.GroupBy(x =>x).Any(xHeader => xHeader.Count() > 1) ||
                     kSet.sevenk.GroupBy(x => x).Any(xHeader => xHeader.Count() > 1)) {

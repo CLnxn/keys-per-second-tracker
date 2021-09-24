@@ -12,6 +12,8 @@ namespace kpsWindow
 {
     class kpsGraph
     {
+
+        public static bool freezeGraph = false;
         private delegate void AddChart();
         private delegate void AddSeries(Series s);
         private AddSeries addSeries;
@@ -147,10 +149,15 @@ namespace kpsWindow
                 }
                 Thread.Sleep(1000);
                 Console.WriteLine("graph thread #" + j);
+                while (freezeGraph)
+                {
+                   
+                    //Console.WriteLine("graph is frozen"); //gg console spam lmao
+                }
             }
-           
-            initializeSeries();
-
+          
+                initializeSeries();
+            
         }
 
         

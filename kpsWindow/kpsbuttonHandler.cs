@@ -24,7 +24,7 @@ namespace kpsWindow
         private Image img;
         private Bitmap bmap;
         private CheckBox cBox;
-        private Button graphB;
+        private Button graphB,configB, resetB, pModeB, freezeGB;
 
         private bool useImg = true;
 
@@ -35,6 +35,7 @@ namespace kpsWindow
         private int configButtonCount = 0;
         public static bool inConfigMode = false;
         public static bool isGraphOpen = false;
+        public static bool inPlayMode = false;
 
         private kpsGraphics kpsGraphics; //only assign this/to this if 2nd overload is used
         private kpsGraph kpsGraph;
@@ -86,7 +87,8 @@ namespace kpsWindow
             loadConfigButton();
             loadResetButton();
             loadGraphButton();   //pressing button right before 1st thread starts iterating throws an empty window
-
+            loadPlayModeButton();
+            loadFreezeGraphButton();
 
         }
 
@@ -209,18 +211,18 @@ namespace kpsWindow
         private void loadResetButton()
         {
             
-            Button resetButton = new Button();
-            resetButton.Size = new Size(100, 20);
-            resetButton.Text = "Reset";
+            this.resetB = new Button();
+            resetB.Size = new Size(45, 20);
+            resetB.Text = "Reset";
 
-            resetButton.ForeColor = Color.LawnGreen;
-            resetButton.BackColor = Color.Black;
-
-            resetButton.Location = new Point(form.width-resetButton.Size.Width, resetButton.Size.Height);
+            resetB.ForeColor = Color.LawnGreen;
+            resetB.BackColor = Color.Black;
+           // form.width - resetB.Size.Width
+            resetB.Location = new Point(form.width-resetB.Size.Width, 2*resetB.Size.Height);
            
-            resetButton.MouseClick += onMouseClickReset;
+            resetB.MouseClick += onMouseClickReset;
 
-            form.Controls.Add(resetButton);
+            form.Controls.Add(resetB);
 
 
         }
@@ -279,7 +281,7 @@ namespace kpsWindow
 
            graphB = new Button();
           
-            graphB.Size = new Size(45, 20);
+            graphB.Size = new Size(90, 20);
             graphB.Text = "Graph";
 
             graphB.ForeColor = Color.LawnGreen;
@@ -314,10 +316,77 @@ namespace kpsWindow
 
         }
 
+        private void loadPlayModeButton() {
+            this.pModeB = new Button();
 
-        public kpsGraph getGraph() {
+            pModeB.Size = new Size(45, 20); //45,20 default non kps-button size
+                                              // configbutton.Location = new Point(form.width, form.height - configbutton.Height);
+            pModeB.Text = "Play";
+            pModeB.BackColor = Color.Black;
+            pModeB.ForeColor = Color.LawnGreen;
+            pModeB.Location = new Point(0, 2*pModeB.Size.Height);
 
-            return this.kpsGraph;
+            pModeB.MouseClick += onMouseClickPMB;
+
+            form.Controls.Add(pModeB);
+
+
+
+        }
+
+        private void onMouseClickPMB(Object o, MouseEventArgs e) {
+
+            
+            //inPlayMode = true disables resetAvgSize & increases maxSize to 100(seconds)
+            if (!inPlayMode)
+            {
+                pModeB.ForeColor = Color.White;
+                pModeB.Text = "Break";
+                inPlayMode = true;
+                form.Kcalc.maxSize = 100;
+            }
+            else {
+                pModeB.ForeColor = Color.LawnGreen;
+                pModeB.Text = "Play";
+                inPlayMode = false;
+                form.Kcalc.maxSize = 10;
+            }
+        
+        
+        }
+
+
+        private void loadFreezeGraphButton() {
+
+            this.freezeGB = new Button();
+
+            freezeGB.Size = new Size(90, 20); //45,20 default non kps-button size
+                                            // configbutton.Location = new Point(form.width, form.height - configbutton.Height);
+            freezeGB.Text = "Freeze";
+            freezeGB.BackColor = Color.Black;
+            freezeGB.ForeColor = Color.LawnGreen;
+            freezeGB.Location = new Point(form.width-freezeGB.Size.Width,  freezeGB.Size.Height);
+
+            freezeGB.MouseClick += onMouseClickFGB;
+
+            form.Controls.Add(freezeGB);
+
+        }
+        //one day i need a listener class to dump all the eventhandlers from here into
+        private void onMouseClickFGB(Object o , MouseEventArgs e) {
+            if (!kpsGraph.freezeGraph)
+            {
+                kpsGraph.freezeGraph = true;
+                freezeGB.ForeColor = Color.AliceBlue;
+                freezeGB.Text = "Unfreeze";
+
+
+            }
+            else {
+                kpsGraph.freezeGraph = false;
+                freezeGB.ForeColor = Color.LawnGreen;
+                freezeGB.Text = "Freeze";
+            }
 
         }
 
@@ -326,17 +395,17 @@ namespace kpsWindow
         private void loadConfigButton()
         {
 
-            Button configbutton = new Button();
-            configbutton.Size = new Size(100, 20); //45,20 default non kps-button size
+             this.configB = new Button();
+            configB.Size = new Size(90, 20); //45,20 default non kps-button size
                                                   // configbutton.Location = new Point(form.width, form.height - configbutton.Height);
-            configbutton.Text = "Key Config";
-            configbutton.BackColor = Color.Black;
-            configbutton.ForeColor = Color.LawnGreen;
-            configbutton.Location = new Point(form.width-configbutton.Size.Width,0);
+            configB.Text = "Key Config";
+            configB.BackColor = Color.Black;
+            configB.ForeColor = Color.LawnGreen;
+            configB.Location = new Point(form.width-configB.Size.Width,0);
 
-            configbutton.MouseClick += onMouseClick;
+            configB.MouseClick += onMouseClick;
 
-            form.Controls.Add(configbutton);
+            form.Controls.Add(configB);
 
         }
 
@@ -351,6 +420,11 @@ namespace kpsWindow
                 form.Controls.Remove(cBox); //needs testing
                 form.Controls.Remove(avgkpsLh.getLabel());
                 form.Controls.Remove(graphB);
+                form.Controls.Remove(configB);
+                form.Controls.Remove(resetB);
+                form.Controls.Remove(pModeB);
+                form.Controls.Remove(freezeGB);
+
 
                 configLabel.configurationLabel();
                 form.HookM.SubscribeConfig();
@@ -474,7 +548,10 @@ namespace kpsWindow
                 reInitButtonKeys();
                 form.Controls.Add(cBox);
                 form.Controls.Add(graphB);
-
+                form.Controls.Add(configB);
+                form.Controls.Add(resetB);
+                form.Controls.Add(pModeB);
+                form.Controls.Add(freezeGB);
                 cBox.Select();
                 form.Controls.Add(kpsLh.getLabel());
                 form.Controls.Add(maxkpsLh.getLabel());

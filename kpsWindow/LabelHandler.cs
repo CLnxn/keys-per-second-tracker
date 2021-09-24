@@ -34,7 +34,8 @@ namespace kpsWindow
             {
                 label.Size = new Size(140, 50);
                 label.TextAlign = ContentAlignment.BottomCenter;
-                label.Location = new Point((int) (form.width-label.Width)/ 2, 10);
+                label.Location = new Point((int) (form.width-label.Width)/ 2, 15);
+                label.ForeColor = Color.Black;
             }
             
 

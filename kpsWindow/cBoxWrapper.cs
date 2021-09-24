@@ -25,13 +25,14 @@ namespace kpsWindow
             cBox.BackColor = Color.Black;
             cBox.ForeColor = Color.LawnGreen;
            
-            cBox.Size = new Size(45,20);
+            cBox.Size = new Size(90,20);
             cBox.AutoCheck = false;
             cBox.Location = new Point(0,0);
             //cBox.Location = new System.Drawing.Point(0,form.height-cBox.Size.Height);
             cBox.AutoSize = false;
             cBox.ThreeState = false;
             cBox.Text = defText;
+            cBox.TextAlign = ContentAlignment.MiddleCenter;
 
             // cBox.CheckStateChanged += onCheckedChanged;
 
@@ -59,7 +60,10 @@ namespace kpsWindow
             {
                 throw new NullReferenceException();
             }
-
+            //reset checkbuttons on form layout change
+            kpsGraph.freezeGraph = false;
+            kpsbuttonHandler.inPlayMode = false;
+            kpsbuttonHandler.isGraphOpen = false;
 
             //4 is default
             if (form.noOfKeys == 7)
@@ -73,26 +77,26 @@ namespace kpsWindow
                 nform.ShowDialog();
 
 
-                //    Application.Run(new kpsForm(4));
+              
 
             }
             else if (form.noOfKeys == 4)
             {
-                // form.Close();
+               
                 kpsForm nform = new kpsForm(7);
                 form.Visible = false;
                 form.Close();
                 form.Dispose();
                 setCboxText(4, nform);
                 nform.ShowDialog();
-                // Application.Run(new kpsForm(7));
-
+                
 
             }
         }
 
         //event below isnt used as it wont work with autocheck = false; alt+tab auto focuses on checkbox control and if autosize = true,
-        //then form will keep switching b/w 7k n 4k modes on spacebar press. TLDR use mouseclick
+        //then form will keep switching b/w 7k n 4k modes on spacebar press. TLDR use mouseclick instead of checkchanged
+            
             private void onCheckedChanged(Object o, EventArgs e) {
 
             CheckBox box = null;
