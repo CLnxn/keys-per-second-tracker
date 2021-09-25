@@ -77,8 +77,8 @@ namespace kpsWindow
 
         private void onFormClosing(Object o, FormClosingEventArgs e)
         {
-
-            Console.WriteLine(" form closing");
+           
+            Console.WriteLine(" form closing hookm");
             Unsubscribe(true);
             // base.OnFormClosing(e);
 

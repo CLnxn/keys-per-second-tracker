@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using System.Threading;
 
 
 using System.Drawing;
@@ -35,10 +36,10 @@ namespace kpsWindow
         private int configButtonCount = 0;
         public static bool inConfigMode = false;
         public static bool isGraphOpen = false;
-        public static bool inPlayMode = false;
+        public static bool inPlayMode = true;
 
         private kpsGraphics kpsGraphics; //only assign this/to this if 2nd overload is used
-        private kpsGraph kpsGraph;
+        public kpsGraph kpsGraph;
 
         public kpsbuttonHandler(kpsForm form)
         {
@@ -233,7 +234,7 @@ namespace kpsWindow
                 resetB = (Button)o;
             }
 
-            form.Kcalc.forceReset(true,true);
+            form.Kcalc.forceReset(true);
 
            
 
@@ -305,10 +306,26 @@ namespace kpsWindow
         private void onGraphButtonClick(Object o, MouseEventArgs e) {
             // might have to be done on a separate thread
             cBox.Select();
-            if (!isGraphOpen && !inConfigMode) {
+            if (!isGraphOpen && !inConfigMode ) {
+
+                
                 Console.WriteLine("opening graph form");
+                //when kpsGraph has been opened at least once and is not null
+                if (this.kpsGraph != null && kpsGraph.freezeGraph)
+                {
+
+                    this.kpsGraph = new kpsGraph(form, true);
+                    Console.WriteLine("using prev session");
+
+                }
+                else
+                {
+
+                    this.kpsGraph = new kpsGraph(form, false);
+                    Console.WriteLine("assigning new graph");
+                }
                 isGraphOpen = true; //if put after instantiating kpsGraph, isGraphOpen will wait for kpsGraph's formclosing event to fire before setting it back to true; problematic
-                this.kpsGraph = new kpsGraph(form, true);
+                
                 
             }
 
@@ -321,7 +338,7 @@ namespace kpsWindow
 
             pModeB.Size = new Size(45, 20); //45,20 default non kps-button size
                                               // configbutton.Location = new Point(form.width, form.height - configbutton.Height);
-            pModeB.Text = "Play";
+            pModeB.Text = "Break";
             pModeB.BackColor = Color.Black;
             pModeB.ForeColor = Color.LawnGreen;
             pModeB.Location = new Point(0, 2*pModeB.Size.Height);
@@ -336,20 +353,30 @@ namespace kpsWindow
 
         private void onMouseClickPMB(Object o, MouseEventArgs e) {
 
-            
+
             //inPlayMode = true disables resetAvgSize & increases maxSize to 100(seconds)
+           
+            
             if (!inPlayMode)
             {
-                pModeB.ForeColor = Color.White;
+                //enter play mode
+                pModeB.ForeColor = Color.LawnGreen;
                 pModeB.Text = "Break";
                 inPlayMode = true;
-                form.Kcalc.maxSize = 100;
+                
+                Console.WriteLine("playmode is true");
+
+                form.Kcalc.tmaxSize = 100;
+                
+
             }
             else {
+                //break
                 pModeB.ForeColor = Color.LawnGreen;
                 pModeB.Text = "Play";
                 inPlayMode = false;
-                form.Kcalc.maxSize = 10;
+                form.Kcalc.tmaxSize = 10;
+
             }
         
         
@@ -377,6 +404,7 @@ namespace kpsWindow
             if (!kpsGraph.freezeGraph)
             {
                 kpsGraph.freezeGraph = true;
+               
                 freezeGB.ForeColor = Color.AliceBlue;
                 freezeGB.Text = "Unfreeze";
 
@@ -384,6 +412,10 @@ namespace kpsWindow
             }
             else {
                 kpsGraph.freezeGraph = false;
+                if (kpsGraph != null)
+                {
+                 
+                }
                 freezeGB.ForeColor = Color.LawnGreen;
                 freezeGB.Text = "Freeze";
             }

@@ -9,6 +9,8 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
+		newRelease|Any CPU = newRelease|Any CPU
+		newRelease|x64 = newRelease|x64
 		output|Any CPU = output|Any CPU
 		output|x64 = output|x64
 		Release|Any CPU = Release|Any CPU
@@ -18,6 +20,10 @@ Global
 		{FCC42E49-BECA-4851-BF3D-35262113A621}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FCC42E49-BECA-4851-BF3D-35262113A621}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCC42E49-BECA-4851-BF3D-35262113A621}.Debug|x64.ActiveCfg = Debug|x64
+		{FCC42E49-BECA-4851-BF3D-35262113A621}.newRelease|Any CPU.ActiveCfg = newRelease|Any CPU
+		{FCC42E49-BECA-4851-BF3D-35262113A621}.newRelease|Any CPU.Build.0 = newRelease|Any CPU
+		{FCC42E49-BECA-4851-BF3D-35262113A621}.newRelease|x64.ActiveCfg = newRelease|x64
+		{FCC42E49-BECA-4851-BF3D-35262113A621}.newRelease|x64.Build.0 = newRelease|x64
 		{FCC42E49-BECA-4851-BF3D-35262113A621}.output|Any CPU.ActiveCfg = output|Any CPU
 		{FCC42E49-BECA-4851-BF3D-35262113A621}.output|x64.ActiveCfg = output|x64
 		{FCC42E49-BECA-4851-BF3D-35262113A621}.Release|Any CPU.ActiveCfg = Release|Any CPU

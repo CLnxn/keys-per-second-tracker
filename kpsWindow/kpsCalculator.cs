@@ -14,9 +14,12 @@ namespace kpsWindow
         public double totalkeys = 0;
 
         public List<double> kpsList = new List<double>();
-        public int maxSize = 11; //size of list inclusive of zero index. 
+        
+        public int tmaxSize = 100; //default size of list inclusive of zero index. 
+        public int maxSize = 100;
+        
         int samplesize = 3;  //number of acceptable in-a-row zeros
-        int resetAvgSize = 10; //number of accpetable in-a-row zeros before resetting avgkps
+        int resetAvgSize = 10; //number of accpetable in-a-row zeros before resetting avgkps (= acceptable seconds of no key press)
         private kpsForm sform;
        
 
@@ -63,24 +66,35 @@ namespace kpsWindow
         private void Sform_FormClosing(object sender, FormClosingEventArgs e)
         {
 
-            forceReset(true,false);
+            forceReset();
             Console.WriteLine(" sform closing & aborted");
         }
+        
+        public void forceReset() {
+            forceReset(false);
 
+        }
+        public void forceReset(bool restart) {
+            forceReset(restart,true);
 
-        public void forceReset(bool resetMax, bool restart) {
+        }
+        public void forceReset(bool restart, bool resetMax) {
+            forceReset(restart,resetMax,true);
+        }
+        //default param: false,true,true
+        public void forceReset(bool restart, bool resetMax,bool resetDList) {
             Console.WriteLine("resetting.");
 
-          var threads = this.threadGroup;
-            foreach (Thread t in threads) {
+          
+            foreach (Thread t in threadGroup) {
                 t.Abort();
             
             }
             threadGroup.Clear();
-            
 
-            kpsList.Clear();
-         
+            if (resetDList) {
+                kpsList.Clear();
+            }
             keysPerNs = 0;
             kps = 0;
             totalkeys = 0;
@@ -112,7 +126,7 @@ namespace kpsWindow
         public void scheduledDump(int threadno) {
           
             
-            try {
+            //try {
 
                 upLabel update = updateLabels;
                 int setno = threadno;
@@ -143,9 +157,10 @@ namespace kpsWindow
                     }
                    
                     if (kpsList.Count >= samplesize) {
-                        int k = 0;
-                       
-                        var kList = kpsList;
+
+                    int k = 0; // currently number of seconds of no keypress (in-a-row zero kps)
+
+                    var kList = kpsList;
                         
                         for (int j=0; j< kpsList.Count;j++) {
 
@@ -166,19 +181,23 @@ namespace kpsWindow
                         if (k >= samplesize)
                         {
                             i--;
+                         
                             if (k >= resetAvgSize && !kpsbuttonHandler.inPlayMode) //inplaymode ensures avg isnt auto reset after resetavgsize in-a-row zeros
                             {
-                                Thread temp = new Thread(() => forceReset(false, true));
-                                temp.Start();
+                            
+                                Thread temp = new Thread(() => forceReset(true,false,false));
+                                //temp.Start(); 
 
                             }
                             
 
                         }
-                        
-                           
-                            avgkps = Math.Round(totalkeys / (setno * baseno + i), 1);
-                        
+                    try
+                    {
+                        avgkps = Math.Round(totalkeys / (setno * baseno + i), 1);
+                    }
+                    catch (Exception e) { Console.WriteLine(e.StackTrace);
+                    }
 
 
                     
@@ -228,21 +247,16 @@ namespace kpsWindow
                // threadGroup.Add(tcontinued);
                // tcontinued.Start();
 
-            } catch (Exception ex) {
-                if (ex.InnerException is ThreadInterruptedException)
-                {
-                    Thread.CurrentThread.Abort();
+            //} catch (Exception ex) {
+               // Console.WriteLine(ex.StackTrace);
+                   // Thread.CurrentThread.Abort();
 
-                }
-                else if (ex.InnerException is NullReferenceException)
-                {
-                    Console.WriteLine("Ending process");
-                }
+               
                         
                 
 
            
-            }
+           // }
 
 
            

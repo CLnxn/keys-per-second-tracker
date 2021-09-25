@@ -138,7 +138,7 @@ namespace kpsWindow
                 
                 if (kSet.fourk.GroupBy(x =>x).Any(xHeader => xHeader.Count() > 1) ||
                     kSet.sevenk.GroupBy(x => x).Any(xHeader => xHeader.Count() > 1)) {
-                    Console.WriteLine("duplicates detected"); // shd only occur if the kd.json is mistakenly edited
+                    Console.WriteLine("duplicates detected"); // shd only occur if the kd.json is mistakenly edited manually
                     throw new Exception();
                    
                 }

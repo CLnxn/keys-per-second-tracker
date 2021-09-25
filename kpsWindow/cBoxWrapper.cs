@@ -62,7 +62,7 @@ namespace kpsWindow
             }
             //reset checkbuttons on form layout change
             kpsGraph.freezeGraph = false;
-            kpsbuttonHandler.inPlayMode = false;
+            kpsbuttonHandler.inPlayMode = true;
             kpsbuttonHandler.isGraphOpen = false;
 
             //4 is default
