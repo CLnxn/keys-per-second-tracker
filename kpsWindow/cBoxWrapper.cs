@@ -64,6 +64,7 @@ namespace kpsWindow
             kpsGraph.freezeGraph = false;
             kpsbuttonHandler.inPlayMode = true;
             kpsbuttonHandler.isGraphOpen = false;
+            
 
             //4 is default
             if (form.noOfKeys == 7)

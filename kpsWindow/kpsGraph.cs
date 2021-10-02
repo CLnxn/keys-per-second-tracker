@@ -24,16 +24,20 @@ namespace kpsWindow
         private delegate void ChangeSMarker();
         private delegate void AddArea();
 
+        private delegate void CloseDispForm();
+
         private ChangeSMarker changeMarker;
         private AddSeries addSeries;
         private AddChart addChart;
         private AddArea addArea;
 
+        private CloseDispForm closeDisp;
+
         public ChartArea cArea;
         public Series series;
+        public Form dispForm;
         kpsForm form;
         int tmaxSize;
-        Form dispForm; // used only if createWindow = true
         Chart chart;
         public Thread t;
         Thread t1;
@@ -50,6 +54,7 @@ namespace kpsWindow
             this.addSeries = addSeriestoChart;
             this.addArea = addAreatoChart;
             this.changeMarker = changemarker;
+            this.closeDisp = closeDispForm;
            
             this.tmaxSize = form.Kcalc.tmaxSize;
             dispForm = new Form();
@@ -102,6 +107,8 @@ namespace kpsWindow
 
 
         }
+
+        
         
         private void waitToinitSeries() {
             while (freezeGraph) { 
@@ -120,7 +127,7 @@ namespace kpsWindow
                 dispForm.ShowDialog();
 
             
-            Console.WriteLine("threads supposedly cleared.");
+           // Console.WriteLine("threads supposedly cleared.");
         }
 
         private void addAreatoChart() {
@@ -221,13 +228,13 @@ namespace kpsWindow
                 //thread safe calls to control based on their creation thread.
                 if (chart.InvokeRequired)
                 {
-                    chart.Invoke(addSeries, new Object[] { usePrevSession ? storeS : series });
+                    chart.Invoke(addSeries, new Object[] { series });
                     chart.Invoke(addArea);
                   //  Console.WriteLine(usePrevSession ? "strue" : "sfalse");
                     }
                     else
                     {
-                        addSeriestoChart(usePrevSession? storeS : series);
+                        addSeriestoChart(series);
                         addAreatoChart();
                    // Console.WriteLine(usePrevSession ? "strue" : "sfalse");
 
@@ -240,9 +247,15 @@ namespace kpsWindow
                 else {
                     addCharttoDisplay(); 
                 }
-                while (freezeGraph) { 
-                
-                
+                if (freezeGraph) {
+                    bool prevPlay = kpsbuttonHandler.inPlayMode;
+                    while (freezeGraph) {
+                        if (prevPlay != kpsbuttonHandler.inPlayMode) {
+                            break;
+                        }
+
+                    }
+                   
                 }
 
                 if (!freezeGraph) {
@@ -298,6 +311,7 @@ namespace kpsWindow
         public void reset() {
             foreach (Thread th in allThreads)
             {
+                
                 th.Abort();
 
             }
@@ -308,15 +322,26 @@ namespace kpsWindow
 
         private void onkpsFormClosing(Object o, FormClosingEventArgs e)
         {
+            
+            if (dispForm.InvokeRequired) {
+                dispForm.Invoke(closeDisp);
+                Console.WriteLine("invoked close display.");
+            }
+            
+           
             reset();
-            Console.WriteLine(" form closing 1");
+           
+            Console.WriteLine("kps form  closing in kpsgraph");
             //Unsubscribe(true);
             // base.OnFormClosing(e);
 
 
         }
 
-
+        private void closeDispForm() {
+            dispForm.Close();
+        
+        }
 
 
 

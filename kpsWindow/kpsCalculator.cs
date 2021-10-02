@@ -14,14 +14,16 @@ namespace kpsWindow
         public double totalkeys = 0;
 
         public List<double> kpsList = new List<double>();
+        public List<double> tkpsList = new List<double>();
         
         public int tmaxSize = 100; //default size of list inclusive of zero index. 
         public int maxSize = 100;
+
         
         int samplesize = 3;  //number of acceptable in-a-row zeros
-        int resetAvgSize = 10; //number of accpetable in-a-row zeros before resetting avgkps (= acceptable seconds of no key press)
+        int resetAvgSize = 20; //number of accpetable in-a-row zeros before resetting avgkps (= acceptable seconds of no key press)
         private kpsForm sform;
-       
+        
 
         private LabelHandler kpsLh, maxkpsLh, avgkpsLh;
 
@@ -52,7 +54,7 @@ namespace kpsWindow
             this.kpsLh = sform.Bhandler.kpsLh;
             this.maxkpsLh = sform.Bhandler.maxkpsLh;
             this.avgkpsLh = sform.Bhandler.avgkpsLh;
-
+            
 
             Thread thread = new Thread(() => scheduledDump(0));
             threadGroup.Add(thread);
@@ -91,10 +93,13 @@ namespace kpsWindow
             
             }
             threadGroup.Clear();
-
+            tkpsList.Clear();
             if (resetDList) {
                 kpsList.Clear();
+                
+                
             }
+
             keysPerNs = 0;
             kps = 0;
             totalkeys = 0;
@@ -142,7 +147,7 @@ namespace kpsWindow
                     totalkeys += kps;
 
 
-                    Console.WriteLine($"Thread #{threadno+1} // iteration #" + (threadno * baseno + i));
+                  //  Console.WriteLine($"Thread #{threadno+1} // iteration #" + (threadno * baseno + i));
 
                     if (0<kps && kps<1 ) {
                         kps = 1;
@@ -151,42 +156,51 @@ namespace kpsWindow
 
 
                     kpsList.Add(kps);
-                   
-                    if (kpsList.Count > maxSize) {
+                    tkpsList.Add(kps);
+                    
+                if (kpsList.Count > maxSize) {
                         kpsList.RemoveRange(0,kpsList.Count- maxSize);
-                    }
+                      
                    
-                    if (kpsList.Count >= samplesize) {
+                }
+                if (tkpsList.Count > maxSize) {
+
+                    tkpsList.RemoveRange(0, tkpsList.Count - maxSize);
+                }
+
+               
+
+
+                if (tkpsList.Count >= samplesize) {
 
                     int k = 0; // currently number of seconds of no keypress (in-a-row zero kps)
-
-                    var kList = kpsList;
+                   
+                    var kList = tkpsList;
                         
-                        for (int j=0; j< kpsList.Count;j++) {
+                        for (int j=0; j< tkpsList.Count;j++) {
 
-                            if (kList[kList.Count - 1 - j] == 0)
+                            if (kList[tkpsList.Count - 1 - j] == 0)
                             {
 
                                 k++;
-
+                               
                             }
-                            else { 
-                                break;
+                            else {
+                            break;
                             }
-                        
+                           
 
-
-                        }
+                    }
                         // if there are at least samplesize zeros in a row, avgkps calculation will ignore the current zero and the totaltime denominator is unchanged.
                         if (k >= samplesize)
                         {
                             i--;
-                         
-                            if (k >= resetAvgSize && !kpsbuttonHandler.inPlayMode) //inplaymode ensures avg isnt auto reset after resetavgsize in-a-row zeros
-                            {
                             
+                            if (k >= resetAvgSize) //no more inplaymode dependency; will always reset avgkps after resetAvgSize
+                            {
+                                
                                 Thread temp = new Thread(() => forceReset(true,false,false));
-                                //temp.Start(); 
+                                temp.Start(); 
 
                             }
                             
