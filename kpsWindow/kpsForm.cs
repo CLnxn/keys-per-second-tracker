@@ -47,7 +47,7 @@ namespace kpsWindow
                 Bitmap bmp = new Bitmap(fileHandler.path + "\\ico.jpg"); //throws exception if ico is missing
                 this.Icon = Icon.FromHandle(bmp.GetHicon());
             }
-            catch (Exception e) {
+            catch (Exception) {
                     //maybe implement a default ico.jpg || throw error message popup
             
             }

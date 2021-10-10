@@ -15,6 +15,8 @@ namespace kpsWindow
 
         public List<double> kpsList = new List<double>();
         public List<double> tkpsList = new List<double>();
+        // public List<double> loopList = new List<double>();
+        public Queue<double> kpsQ = new Queue<double>();
         
         public int tmaxSize = 100; //default size of list inclusive of zero index. 
         public int maxSize = 100;
@@ -23,16 +25,16 @@ namespace kpsWindow
         int samplesize = 3;  //number of acceptable in-a-row zeros
         int resetAvgSize = 20; //number of accpetable in-a-row zeros before resetting avgkps (= acceptable seconds of no key press)
         private kpsForm sform;
-        
+     
 
         private LabelHandler kpsLh, maxkpsLh, avgkpsLh;
-
-
        
+
+
         public delegate void upLabel();
+        upLabel update;
 
-        
-       
+
 
         List<Thread> threadGroup = new List<Thread>();
         
@@ -54,11 +56,14 @@ namespace kpsWindow
             this.kpsLh = sform.Bhandler.kpsLh;
             this.maxkpsLh = sform.Bhandler.maxkpsLh;
             this.avgkpsLh = sform.Bhandler.avgkpsLh;
-            
 
+            update = updateLabels;
             Thread thread = new Thread(() => scheduledDump(0));
+            Thread threadloop = new Thread(loopUpdate);
             threadGroup.Add(thread);
+           threadGroup.Add(threadloop);
             thread.Start();
+            threadloop.Start();
 
 
         }
@@ -124,7 +129,55 @@ namespace kpsWindow
             avgkpsLh.configureAvgKpsLabel();
           
         }
-        
+
+        public void loopUpdate() {
+
+
+            int sampleT = 10;
+            double localkps = 0;
+
+            if (kpsQ.Count == 0)
+            {
+                for (int i = 0; i < sampleT;i++) {
+                    kpsQ.Enqueue(0);
+
+                }
+               
+            }
+            // var vlist = loopList;
+            while (true) {
+                Thread.Sleep(1000/sampleT);
+                 //Console.WriteLine("running");
+              
+                    kpsQ.Enqueue(keysPerNs);
+                    kpsQ.Dequeue();
+                    foreach (double keyPn in kpsQ) {
+                        localkps += keyPn;
+                    }
+
+
+                    kps = Math.Round(localkps, 1);
+
+                if (kps > maxkps)
+                {
+                    maxkps = kps;
+
+                }
+
+                if (sform.InvokeRequired && !kpsbuttonHandler.inConfigMode)
+                {
+                    sform.Invoke(update);
+                }
+                keysPerNs = 0;
+
+
+                localkps = 0;
+            }
+
+
+
+
+        }
 
      
 
@@ -133,30 +186,29 @@ namespace kpsWindow
             
             //try {
 
-                upLabel update = updateLabels;
+                
                 int setno = threadno;
                 int baseno = 10000;
              
                 for (int i = 1; i<baseno+1;i++) {
 
-                  
+                
                     Thread.Sleep(1000);
-                  
-                    kps = keysPerNs/1;
 
-                    totalkeys += kps;
-
-
-                  //  Console.WriteLine($"Thread #{threadno+1} // iteration #" + (threadno * baseno + i));
-
-                    if (0<kps && kps<1 ) {
-                        kps = 1;
-                    }
+                // kps = keysPerNs/1;
 
 
 
-                    kpsList.Add(kps);
-                    tkpsList.Add(kps);
+
+                //  Console.WriteLine($"Thread #{threadno+1} // iteration #" + (threadno * baseno + i));
+
+                    double kpsinstant = kps;
+               // Console.WriteLine( "kpsinstant: " +kpsinstant);
+                
+                    totalkeys += kpsinstant;
+                    kpsList.Add(kpsinstant);
+                    tkpsList.Add(kpsinstant);
+                
                     
                 if (kpsList.Count > maxSize) {
                         kpsList.RemoveRange(0,kpsList.Count- maxSize);
@@ -209,6 +261,7 @@ namespace kpsWindow
                     try
                     {
                         avgkps = Math.Round(totalkeys / (setno * baseno + i), 1);
+
                     }
                     catch (Exception e) { Console.WriteLine(e.StackTrace);
                     }
@@ -220,19 +273,15 @@ namespace kpsWindow
 
                     
 
-                    if (kps>maxkps) {
-                        maxkps = kps;
-
-                    }
-
-
-                    //do stuff after every 1s:
+                  
+                
+                //do stuff after every 1s:
 
 
-                    try
+                try
                     {
                         if (sform.InvokeRequired && !kpsbuttonHandler.inConfigMode) {
-                            sform.Invoke(update);
+                            //sform.Invoke(update);
                         }
                         
 
@@ -243,14 +292,14 @@ namespace kpsWindow
                         Console.WriteLine(e.StackTrace);
 
                     }
-               
-                   
-                  //  Console.WriteLine(kpsLh.getLabel().Text);
-               // maxkpsLh.configureHighestKpsLabel();
 
-                    //reset 
-                    
-                    keysPerNs = 0;
+
+                //  Console.WriteLine(kpsLh.getLabel().Text);
+                // maxkpsLh.configureHighestKpsLabel();
+
+                //reset 
+                
+                keysPerNs = 0;
                   
 
 

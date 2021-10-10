@@ -20,18 +20,20 @@ namespace kpsWindow
            label.BackColor = Color.Transparent;
            
           
-            label.Font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold);
+           
             
 
             label.AutoSize = false;
             if (isMaxKps)
             {
+                label.Font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold);
                 label.Size = new Size(140, 35);
                 label.TextAlign = ContentAlignment.MiddleCenter;
                 label.Location = new Point((int) (form.width-label.Width),form.height-label.Size.Height);
             }
             else
             {
+                label.Font = new Font(FontFamily.GenericSansSerif, 25, FontStyle.Bold);
                 label.Size = new Size(140, 50);
                 label.TextAlign = ContentAlignment.BottomCenter;
                 label.Location = new Point((int) (form.width-label.Width)/ 2, 15);
@@ -68,11 +70,13 @@ namespace kpsWindow
         public void configureKpsLabel()
         {
 
-         
-           
 
-            label.Text = "Your Kps: " + kpsCalculator.kps ;
+            double localKps = kpsCalculator.kps;
+
+            label.Text = ""+ localKps;
+            label.ForeColor = kpsToColor(localKps);
             
+
             form.Controls.Add(label);
 
 
@@ -84,7 +88,7 @@ namespace kpsWindow
 
            
 
-            label.Text ="Highest Kps: "+ kpsCalculator.maxkps;
+            label.Text ="Max: "+ kpsCalculator.maxkps;
 
             form.Controls.Add(label);
         
@@ -104,11 +108,44 @@ namespace kpsWindow
         public void configureAvgKpsLabel() {
             label.Font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold);
             label.Size = new Size(140, 35);
-            label.Text = "Average kps: " + kpsCalculator.avgkps;
-          
+            label.Text = "Avg: " + kpsCalculator.avgkps;
+            
              label.TextAlign = ContentAlignment.MiddleCenter;
              label.Location = new Point(0,form.height-label.Size.Height);
             form.Controls.Add(label);
+
+        }
+
+
+        public Color kpsToColor(double kps) {
+            if (kps<20 && kps >= 0)
+            {
+                return Color.Purple;
+
+            }
+
+            else if (kps < 40 && kps >= 20)
+            {
+                return Color.DarkBlue;
+            }
+
+            else if (kps < 60 && kps >= 40)
+            {
+                return Color.DarkGreen;
+            }
+
+            else if (kps < 80 && kps >= 60)
+            {
+                return Color.OrangeRed;
+
+            }
+
+            else if (kps >= 80)
+            {
+                return Color.Red;
+
+            }
+            else { return Color.Black; }
 
         }
     }

@@ -221,6 +221,7 @@ namespace kpsWindow
                 else
                 {
                    this.series = storeS;
+                    Console.WriteLine("USING PREV SESSION");
                     
                 }
                 switchMarkerOnPlayMode();
@@ -251,6 +252,8 @@ namespace kpsWindow
                     bool prevPlay = kpsbuttonHandler.inPlayMode;
                     while (freezeGraph) {
                         if (prevPlay != kpsbuttonHandler.inPlayMode) {
+                            storeS = this.series;
+                            usePrevSession = true;
                             break;
                         }
 

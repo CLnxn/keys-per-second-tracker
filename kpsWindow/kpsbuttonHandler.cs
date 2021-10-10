@@ -23,7 +23,7 @@ namespace kpsWindow
         private kpsForm form;
         public LabelHandler kpsLh, maxkpsLh, configLabel, avgkpsLh;
         private Image img;
-        private Bitmap bmap;
+        
         private CheckBox cBox;
         private Button graphB,configB, resetB, pModeB, freezeGB;
 
@@ -65,7 +65,7 @@ namespace kpsWindow
 
               
             }
-            catch (Exception e) {
+            catch (Exception) {
              
            
                 this.useImg = false;

@@ -12,7 +12,7 @@ namespace kpsWindow
 
         private cBoxWrapper cBw1;
 
-        private cBoxWrapper cBw2;
+       
 
     
         
@@ -26,7 +26,7 @@ namespace kpsWindow
 
                 displayDefBg();
             }
-            catch (Exception e) {
+            catch (Exception) {
                 //maybe implement a default bgimg.jpg || throw error message popup
             }
 
