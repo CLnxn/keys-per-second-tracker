@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
-
+using System.Diagnostics;
 namespace kpsWindow
 {
     class kpsCalculator
@@ -15,7 +15,7 @@ namespace kpsWindow
 
         public List<double> kpsList = new List<double>();
         public List<double> tkpsList = new List<double>();
-        // public List<double> loopList = new List<double>();
+       
         public Queue<double> kpsQ = new Queue<double>();
         
         public int tmaxSize = 100; //default size of list inclusive of zero index. 
@@ -133,9 +133,9 @@ namespace kpsWindow
         public void loopUpdate() {
 
 
-            int sampleT = 10;
+            int sampleT = 25;
             double localkps = 0;
-
+            
             if (kpsQ.Count == 0)
             {
                 for (int i = 0; i < sampleT;i++) {
@@ -144,38 +144,45 @@ namespace kpsWindow
                 }
                
             }
-            // var vlist = loopList;
-            while (true) {
+            // var vlist = loopList; 
+
+            
+            
+          
+            while (true)
+            {
+                
                 Thread.Sleep(1000/sampleT);
-                 //Console.WriteLine("running");
+               
+                
+                //Console.WriteLine("running");
+                
+                      kpsQ.Enqueue(keysPerNs);
+                      double removeVal = kpsQ.Dequeue();
+                  localkps += keysPerNs;
+                  localkps -= removeVal;
+                  //Console.WriteLine(localkps + " kps//kpns: " + keysPerNs);
+
+                  kps = Math.Round(localkps, 1);
+
+                  if (kps > maxkps)
+                  {
+                      maxkps = kps;
+
+                  }
+
+                  if (sform.InvokeRequired && !kpsbuttonHandler.inConfigMode)
+                  {
+                      sform.Invoke(update);
+                  }
+                  keysPerNs = 0;
+
+
+                  //localkps = 0;
               
-                    kpsQ.Enqueue(keysPerNs);
-                    kpsQ.Dequeue();
-                    foreach (double keyPn in kpsQ) {
-                        localkps += keyPn;
-                    }
 
-
-                    kps = Math.Round(localkps, 1);
-
-                if (kps > maxkps)
-                {
-                    maxkps = kps;
-
-                }
-
-                if (sform.InvokeRequired && !kpsbuttonHandler.inConfigMode)
-                {
-                    sform.Invoke(update);
-                }
-                keysPerNs = 0;
-
-
-                localkps = 0;
+  
             }
-
-
-
 
         }
 
@@ -248,7 +255,7 @@ namespace kpsWindow
                         {
                             i--;
                             
-                            if (k >= resetAvgSize) //no more inplaymode dependency; will always reset avgkps after resetAvgSize
+                            if (k >= resetAvgSize && !kpsbuttonHandler.inPlayMode) 
                             {
                                 
                                 Thread temp = new Thread(() => forceReset(true,false,false));
