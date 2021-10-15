@@ -1,5 +1,5 @@
 # kpsApp
-I created a Simple app for osu/others lol
+I created a Simple app for osu/others lol.
 
 
 ## Description
@@ -26,12 +26,7 @@ An App made to track your Keys Per Second! (not a key logger)
 2. Open the File and run LnztKps.exe
 3. Enjoy!
 ```
-
-## Help
-
-Any advise for common problems or issues.
-- Please message me on discord @∮ ∂ Σ B ⋅ d ℓ #7915 regarding any issues!
-   # Kps App Interface/Functionality Description
+## Kps App Interface/Functionality Description
 ```
    * Graph button shows you the Kps-Time Graph that you've been yearning to analyse with
    * Freeze Button freezes graph
@@ -41,6 +36,11 @@ Any advise for common problems or issues.
    * Have Fun analysing!
 
 ```
+## Help
+
+Any advise for common problems or issues.
+- Please message me on discord @∮ ∂ Σ B ⋅ d ℓ #7915 regarding any issues!
+
 
 
 ## Authors
@@ -58,6 +58,7 @@ Contributors names and contact info
     
     
 ## License
+* For the sake of it lol
+* [License](https://github.com/LeafblowerX/kpsApp/blob/master/LICENSE.md)
 
-*Not yet..? Soon
 
