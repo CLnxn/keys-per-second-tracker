@@ -16,8 +16,7 @@ An App made to track your Keys Per Second! (not a key logger)
 
 ### Installing
 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+* Just click on the link below under Version History
 
 ### Executing program
 
