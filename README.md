@@ -23,7 +23,9 @@ An App made to track your Keys Per Second! (not a key logger)
 
 * How to run the program:
 ```
-Open the File and run LnztKps.exe
+1. Unzip the File
+2. Open the File and run LnztKps.exe
+3. Enjoy!
 ```
 
 ## Help
