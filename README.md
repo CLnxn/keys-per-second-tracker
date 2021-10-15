@@ -11,8 +11,7 @@ An App made to track your Keys Per Second! (not a key logger)
 ### Dependencies
 
 * Gma.System.MouseKeyHook.dll (put in the same directory as your exe)
-*  System lib
-*
+*  System lib (duhhh)
 * Windows 10 (Recommended, Other OS versions may be unstable)
 
 ### Installing
@@ -37,7 +36,7 @@ command to run if program contains helper info
 ```
 
 ## Authors
-   @Lnzt(LeafBlowerX)
+   [Lnzt(LeafBlowerX)](https://github.com/LeafblowerX)
 Contributors names and contact info
 
 
@@ -45,7 +44,7 @@ Contributors names and contact info
 
 * 0.2
     * Various bug fixes and optimizations
-    * See [commit change](https://github.com/LeafblowerX/kpsApp/commits/master) or See [release history]()
+    * See [Commits](https://github.com/LeafblowerX/kpsApp/commits/master) or See [release history]()
 * 0.1
     * Initial Release
 
