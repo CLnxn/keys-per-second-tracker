@@ -21,19 +21,15 @@ An App made to track your Keys Per Second! (not a key logger)
 
 ### Executing program
 
-* How to run the program
-* Step-by-step bullets
+* How to run the program:
 ```
-
+Open the File and run LnztKps.exe
 ```
 
 ## Help
 
 Any advise for common problems or issues.
-```
-
-command to run if program contains helper info
-```
+- Please message me on discord @∮ ∂ Σ B ⋅ d ℓ #7915 regarding any issues!
 
 ## Authors
    [Lnzt(LeafBlowerX)](https://github.com/LeafblowerX)
@@ -50,5 +46,5 @@ Contributors names and contact info
 
 ## License
 
-*Not yet..?
+*Not yet..? Soon
 
