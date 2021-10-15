@@ -38,12 +38,13 @@ Contributors names and contact info
 
 ## Version History
 
-* 0.2
-    * Various bug fixes and optimizations
-    * See [Commits](https://github.com/LeafblowerX/kpsApp/commits/master) or See [release history]()
-* 0.1
+* 1.0
     * Initial Release
+    * See [Commits](https://github.com/LeafblowerX/kpsApp/commits/master) for various bug fixes and optimizations
+    * Get it here: [KpsApp 1.0](https://github.com/LeafblowerX/kpsApp/files/7353484/KpsApp.v1.0.zip)
 
+    
+    
 ## License
 
 *Not yet..? Soon
