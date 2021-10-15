@@ -39,8 +39,9 @@ An App made to track your Keys Per Second! (not a key logger)
 
 ## Further App UI Customisation
   * Under the Resources Folder, you can set your own Background and Hit effect for the App!
-  * For Background image: Simply drag a JPG file into the folder and rename it to "bgimg"
+  * For Background image: Simply drag a JPG file of your choice into the folder and rename it to "bgimg"
   * For Hit Animation: Simply drag a PNG file of your choice into the folder and rename it to "presseffect"
+  * Restart the App!
   * **Removing these images will prompt the program to use its default option instead**
 ## Help
 
