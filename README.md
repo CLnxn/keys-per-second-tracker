@@ -31,6 +31,17 @@ An App made to track your Keys Per Second! (not a key logger)
 
 Any advise for common problems or issues.
 - Please message me on discord @∮ ∂ Σ B ⋅ d ℓ #7915 regarding any issues!
+   # Kps App Interface/Functionality Description
+```
+   * Graph button shows you the Kps-Time Graph that you've been yearning to analyse with
+   * Freeze Button freezes graph
+   * Play/Break button changes the horizontal scale of the graph to accomodate longer gameplay tracking!
+   * 7 key/4 key button changes mode
+   * Config button allows you to customise your own keybinds which you want to track!
+   * Have Fun analysing!
+
+```
+
 
 ## Authors
    [Lnzt(LeafBlowerX)](https://github.com/LeafblowerX)
