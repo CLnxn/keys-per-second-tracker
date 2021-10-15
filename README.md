@@ -45,7 +45,7 @@ Any advise for common problems or issues.
 
 ## Authors
    [Lnzt(LeafBlowerX)](https://github.com/LeafblowerX)
-Contributors names and contact info
+
 
 
 ## Version History
