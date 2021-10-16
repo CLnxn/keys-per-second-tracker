@@ -8,6 +8,7 @@ An App made to track your Keys Per Second! (not a key logger)
 
 ## Getting Started
 
+
 ### Dependencies
 
 * Gma.System.MouseKeyHook.dll (put in the same directory as your exe)
@@ -26,8 +27,9 @@ An App made to track your Keys Per Second! (not a key logger)
 2. Open the File and run LnztKps.exe
 3. Enjoy!
 ```
-## Kps App Interface/Functionality Description
+### Kps App Interface/Functionality Description
 ```
+   * Important: Overlay does not work on most applications where fullscreen mode is enabled!!
    * Graph button shows you the Kps-Time Graph that you've been yearning to analyse with
    * Freeze Button freezes graph
    * Play/Break button changes the horizontal scale of the graph to accomodate longer gameplay tracking!
@@ -50,21 +52,21 @@ Any advise for common problems or issues.
 
 
 
-## Authors
-   [Lnzt(LeafBlowerX)](https://github.com/LeafblowerX)
+### Authors
+* [Lnzt(LeafBlowerX)](https://github.com/LeafblowerX)
 
 
 
-## Version History
+### Version History
 
 * 1.0
     * Initial Release
     * See [Commits](https://github.com/LeafblowerX/kpsApp/commits/master) for various bug fixes and optimizations
-    * Get it here: [KpsApp 1.0](https://github.com/LeafblowerX/kpsApp/files/7353592/KpsApp.v1.0.zip)
+    * Get it here: [KpsApp 1.0](https://github.com/LeafblowerX/kpsApp/files/7356639/KpsApp.v1.0.zip)
 
     
     
-## License
+### License
 * For the sake of it lol
 * [License](https://github.com/LeafblowerX/kpsApp/blob/master/LICENSE.md)
 
