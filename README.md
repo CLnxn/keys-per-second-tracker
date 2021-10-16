@@ -60,7 +60,7 @@ Any advise for common problems or issues.
 * 1.0
     * Initial Release
     * See [Commits](https://github.com/LeafblowerX/kpsApp/commits/master) for various bug fixes and optimizations
-    * Get it here: [KpsApp 1.0](https://github.com/LeafblowerX/kpsApp/files/7353592/KpsApp.v1.0.zip)
+    * Get it here: [KpsApp 1.0](https://github.com/LeafblowerX/kpsApp/files/7356639/KpsApp.v1.0.zip)
 
     
     
