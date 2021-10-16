@@ -42,6 +42,8 @@ namespace kpsWindow
             this.noOfKeys = noOfKeys;
 
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.TopMost = true;
+            
             try
             {
                 Bitmap bmp = new Bitmap(fileHandler.path + "\\ico.jpg"); //throws exception if ico is missing
