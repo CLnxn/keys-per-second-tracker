@@ -29,7 +29,7 @@ An App made to track your Keys Per Second! (not a key logger)
 ```
 ### Kps App Interface/Functionality Description
 ```
-   * Important: Overlay does not work on most applications where fullscreen mode is enabled!#
+   * Important: Overlay does not work on most applications where fullscreen mode is enabled!!
    * Graph button shows you the Kps-Time Graph that you've been yearning to analyse with
    * Freeze Button freezes graph
    * Play/Break button changes the horizontal scale of the graph to accomodate longer gameplay tracking!
