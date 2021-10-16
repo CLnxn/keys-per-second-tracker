@@ -123,7 +123,7 @@ namespace kpsWindow
 
         private void startDispForm() {
                 dispForm.FormClosing += onFormClosing;
-                
+                dispForm.TopMost = true;
                 dispForm.ShowDialog();
 
             
