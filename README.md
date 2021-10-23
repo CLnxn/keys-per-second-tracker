@@ -58,11 +58,14 @@ Any advise for common problems or issues.
 
 
 ### Version History
-
+   #### See [Commits](https://github.com/LeafblowerX/kpsApp/commits/master) for various bug fixes and optimizations
 * 1.0
     * Initial Release
-    * See [Commits](https://github.com/LeafblowerX/kpsApp/commits/master) for various bug fixes and optimizations
-    * Get it here: [KpsApp 1.0](https://github.com/LeafblowerX/kpsApp/files/7356846/KpsApp.v1.0.zip)
+    * Get oldest here: [KpsApp v1.0](https://github.com/LeafblowerX/kpsApp/files/7356846/KpsApp.v1.0.zip)
+* 1.0.1
+    * 2nd Release
+    * Get it here: [KpsApp v1.0.1](https://github.com/LeafblowerX/kpsApp/files/7402380/KpsAppv1.0.1.zip)
+ 
 
     
     
