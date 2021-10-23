@@ -364,7 +364,7 @@ namespace kpsWindow
 
                 
                 Console.WriteLine("opening graph form");
-                //when kpsGraph has been opened at least once and is not null
+                //when kpsGraph has been opened at least once and thus is not null & graph is frozen
                 if (this.kpsGraph != null && kpsGraph.freezeGraph)
                 {
 

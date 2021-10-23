@@ -23,6 +23,8 @@ namespace kpsWindow
         private delegate void AddSeries(Series s);
         private delegate void ChangeSMarker();
         private delegate void AddArea();
+        private delegate void UpdateColour(bool inDarkMode, bool updateSeriesColour);
+        private delegate void UpdateSColour(bool inDarkMode);
 
         private delegate void CloseDispForm();
 
@@ -30,6 +32,8 @@ namespace kpsWindow
         private AddSeries addSeries;
         private AddChart addChart;
         private AddArea addArea;
+        private UpdateColour updateCColour;
+        private UpdateSColour updateSColour;
 
         private CloseDispForm closeDisp;
 
@@ -56,6 +60,8 @@ namespace kpsWindow
             this.addArea = addAreatoChart;
             this.changeMarker = changemarker;
             this.closeDisp = closeDispForm;
+            this.updateCColour = updateGraphColour;
+            this.updateSColour = updateSeriesColour;
            
             this.tmaxSize = form.Kcalc.tmaxSize;
             dispForm = new Form();
@@ -63,8 +69,9 @@ namespace kpsWindow
             dispForm.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             dispForm.MaximizeBox = false;
             dispForm.Text = form.noOfKeys + "-key Graph";
-            dispForm.TopMost = true;
-           
+            
+        
+            
            
             this.chart = new Chart();
            
@@ -128,15 +135,32 @@ namespace kpsWindow
 
         private void startDispForm() {
             dispForm.FormClosing += onFormClosing;
-          
+            dispForm.Shown += onDispShown;
             dispForm.ShowDialog();
 
             
            // Console.WriteLine("threads supposedly cleared.");
         }
 
+        private void onDispShown(Object o, EventArgs e) {
 
-        private void updateGraphColor(bool inDarkMode) {
+       
+           dispForm.Focus();
+           dispForm.TopMost = true;
+
+        }
+        private void updateSeriesColour(bool inDarkMode) {
+            if (inDarkMode)
+            {
+                series.Color = Color.LawnGreen;
+            }
+            else
+            {
+                series.Color = Color.Black;
+            }
+        }
+        private void updateGraphColour(bool inDarkMode, bool updateSeriesColour) 
+        {
             if (inDarkMode)
             {
                 cArea.AxisY.MajorGrid.LineColor = Color.LawnGreen;
@@ -147,6 +171,7 @@ namespace kpsWindow
                 cArea.AxisX.LabelStyle.ForeColor = Color.LawnGreen;
                 cArea.AxisY.LabelStyle.ForeColor = Color.LawnGreen;
                 chart.BackColor = Color.Black;
+                
             }
             else
             {
@@ -158,10 +183,16 @@ namespace kpsWindow
                 cArea.AxisX.LabelStyle.ForeColor = Color.Black;
                 cArea.AxisY.LabelStyle.ForeColor = Color.Black;
                 chart.BackColor = Color.White;
-
+              
 
 
             }
+
+            if (updateSeriesColour) 
+            {
+                this.updateSeriesColour(inDarkMode);
+            }
+            
 
 
 
@@ -171,7 +202,7 @@ namespace kpsWindow
           
             this.cArea.AxisX.Maximum = form.Kcalc.tmaxSize;
             this.cArea.BackColor = Color.Transparent;
-            updateGraphColor(LabelHandler.inDarkMode);
+            updateGraphColour(LabelHandler.inDarkMode, false);
             if (chart.ChartAreas.Count != 0) {
                 chart.ChartAreas.Clear();
             }
@@ -247,38 +278,39 @@ namespace kpsWindow
                     for (int i = 0; i < vlist.Count; i++)
                     {
                         DataPoint dPoint = new DataPoint(i, vlist[vlist.Count - 1 - i]);
-                        if (LabelHandler.inDarkMode) {
-                            dPoint.Color = Color.LawnGreen;
-                        }
+                      
                         series.Points.Add(dPoint);
                         
 
                     }
 
                     series.ChartType = SeriesChartType.Line;
-                   
+
                     //  s.MarkerStyle = MarkerStyle.Circle;
-
-                    series.Color = Color.Black;
-
+                  
                 }
                 else
                 {
                    this.series = storeS;
+                   
+                    
                     Console.WriteLine("USING PREV SESSION");
                     
                 }
+             
                 switchMarkerOnPlayMode();
 
                 //thread safe calls to control based on their creation thread.
                 if (chart.InvokeRequired)
                 {
-                    chart.Invoke(addSeries, new Object[] { series });
+                    chart.Invoke(updateSColour, new object[] {LabelHandler.inDarkMode});
+                    chart.Invoke(addSeries, new object[] { series });
                     chart.Invoke(addArea);
                   //  Console.WriteLine(usePrevSession ? "strue" : "sfalse");
                     }
                     else
                     {
+                        updateSeriesColour(LabelHandler.inDarkMode);
                         addSeriestoChart(series);
                         addAreatoChart();
                    // Console.WriteLine(usePrevSession ? "strue" : "sfalse");
@@ -294,7 +326,18 @@ namespace kpsWindow
                 }
                 if (freezeGraph) {
                     bool prevPlay = kpsbuttonHandler.inPlayMode;
+                    bool prevDarkMode = LabelHandler.inDarkMode;
                     while (freezeGraph) {
+
+                        if (prevDarkMode != LabelHandler.inDarkMode) 
+                        {
+                            if (chart.InvokeRequired) {
+                                chart.Invoke(updateCColour, new object[] { LabelHandler.inDarkMode, true}) ;
+                            } else {
+                                updateGraphColour(LabelHandler.inDarkMode, true);
+                            }
+                            prevDarkMode = LabelHandler.inDarkMode;
+                        }
                         if (prevPlay != kpsbuttonHandler.inPlayMode) {
                             storeS = this.series;
                             usePrevSession = true;
