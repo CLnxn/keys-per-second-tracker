@@ -123,7 +123,7 @@ namespace kpsWindow
         
 
       
-        private void updateLabels() {
+        public void updateLabels() {
             kpsLh.configureKpsLabel();
             maxkpsLh.configureHighestKpsLabel();
             avgkpsLh.configureAvgKpsLabel();

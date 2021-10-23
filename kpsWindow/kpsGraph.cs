@@ -62,12 +62,13 @@ namespace kpsWindow
             dispForm.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             dispForm.MaximizeBox = false;
             dispForm.Text = form.noOfKeys + "-key Graph";
+            dispForm.TopMost = true;
             this.chart = new Chart();
             
             initializeChartArea();
 
 
-
+            
            
 
 
@@ -123,8 +124,8 @@ namespace kpsWindow
 
         private void startDispForm() {
                 dispForm.FormClosing += onFormClosing;
-                dispForm.TopMost = true;
-                dispForm.ShowDialog();
+          
+            dispForm.ShowDialog();
 
             
            // Console.WriteLine("threads supposedly cleared.");

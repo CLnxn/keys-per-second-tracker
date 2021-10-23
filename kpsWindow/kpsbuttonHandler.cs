@@ -25,7 +25,7 @@ namespace kpsWindow
         private Image img;
         
         private CheckBox cBox;
-        private Button graphB,configB, resetB, pModeB, freezeGB;
+        private Button graphB,configB, resetB, pModeB, freezeGB, darkButton;
 
         private bool useImg = true;
 
@@ -41,6 +41,7 @@ namespace kpsWindow
         private kpsGraphics kpsGraphics; //only assign this/to this if 2nd overload is used
         public kpsGraph kpsGraph;
 
+
         public kpsbuttonHandler(kpsForm form)
         {
             this.bHeight = 40;
@@ -48,13 +49,7 @@ namespace kpsWindow
             this.form = form;
             this.noOfKeys = form.noOfKeys;
             this.cBox = form.Hgraphics.getCboxWrapper1().getCbox();
-            
-            kpsLh = new LabelHandler(form, false);
-            maxkpsLh = new LabelHandler(form, true);
-            avgkpsLh = new LabelHandler(form);
-           
-            
-            configLabel = new LabelHandler(form);
+            InitLabels(false);
 
             this.keys = fileHandler.GetKeys(noOfKeys);
 
@@ -90,6 +85,7 @@ namespace kpsWindow
             loadGraphButton();   //pressing button right before 1st thread starts iterating throws an empty window
             loadPlayModeButton();
             loadFreezeGraphButton();
+            loadGUIDarkModeButton();
 
         }
 
@@ -108,7 +104,29 @@ namespace kpsWindow
 
 
 
+        public void InitLabels(bool reInit) {
+            if (reInit)
+            {
+                /*
+                form.Controls.Remove(kpsLh.getLabel());
+                form.Controls.Remove(maxkpsLh.getLabel());
+                form.Controls.Remove(avgkpsLh.getLabel());
+                form.Controls.Remove(configLabel.getLabel());
+                */
+                form.Kcalc.updateLabels();
+                
 
+
+
+            }
+            else
+            {
+                kpsLh = new LabelHandler(form, false);
+                maxkpsLh = new LabelHandler(form, true);
+                avgkpsLh = new LabelHandler(form);
+                configLabel = new LabelHandler(form);
+            }
+        }
 
         public void reInitButtonKeys() {
 
@@ -208,7 +226,43 @@ namespace kpsWindow
             }
         }
 
-        //deprecated
+        private void loadGUIDarkModeButton() {
+            this.darkButton = new Button();
+            darkButton.Size = new Size(45, 20);
+            darkButton.Text = (LabelHandler.inDarkMode)? "Light":"Dark";
+
+            darkButton.ForeColor = Color.LawnGreen;
+            darkButton.BackColor = Color.Black;
+            darkButton.Location = new Point(form.width-2*darkButton.Size.Width,2*darkButton.Size.Height);
+            darkButton.MouseClick += onMouseClickDMB;
+            form.Controls.Add(darkButton);
+
+
+        }
+        private void onMouseClickDMB(Object o, MouseEventArgs e) {
+         
+            if (!(o is Button)) { return;
+            }
+            cBox.Select();
+            Button darkB = (Button) o;
+            if (LabelHandler.inDarkMode)
+            {
+                form.BackColor = Color.White;
+                LabelHandler.inDarkMode = false;
+                darkButton.Text = "Dark";
+
+            }
+            else {
+                form.BackColor = Color.Black;
+                LabelHandler.inDarkMode = true;
+                darkButton.Text = "Light";
+            }
+
+            InitLabels(true);
+            
+        
+        }
+
         private void loadResetButton()
         {
             
@@ -333,6 +387,8 @@ namespace kpsWindow
 
         }
 
+        
+
         private void loadPlayModeButton() {
             this.pModeB = new Button();
 
@@ -456,6 +512,7 @@ namespace kpsWindow
                 form.Controls.Remove(resetB);
                 form.Controls.Remove(pModeB);
                 form.Controls.Remove(freezeGB);
+                form.Controls.Remove(darkButton);
 
 
                 configLabel.configurationLabel();
@@ -584,6 +641,7 @@ namespace kpsWindow
                 form.Controls.Add(resetB);
                 form.Controls.Add(pModeB);
                 form.Controls.Add(freezeGB);
+                form.Controls.Add(darkButton);
                 cBox.Select();
                 form.Controls.Add(kpsLh.getLabel());
                 form.Controls.Add(maxkpsLh.getLabel());

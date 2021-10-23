@@ -5,6 +5,7 @@ namespace kpsWindow
 {
     class LabelHandler
     {
+        public static bool inDarkMode = false;
         private Label label;
         private kpsForm form;
 
@@ -18,10 +19,19 @@ namespace kpsWindow
             
             
            label.BackColor = Color.Transparent;
-           
-          
-           
-            
+            if (inDarkMode)
+            {
+                label.ForeColor = Color.LawnGreen;
+                form.BackColor = Color.Black;
+            }
+            else
+            {
+                label.ForeColor = Color.Black;
+                form.BackColor = Color.White;
+            }
+
+
+
 
             label.AutoSize = false;
             if (isMaxKps)
@@ -37,7 +47,7 @@ namespace kpsWindow
                 label.Size = new Size(140, 50);
                 label.TextAlign = ContentAlignment.BottomCenter;
                 label.Location = new Point((int) (form.width-label.Width)/ 2, 15);
-                label.ForeColor = Color.Black;
+                
             }
             
 
@@ -51,8 +61,8 @@ namespace kpsWindow
            
             label.BackColor = Color.Transparent;
 
+          
 
-           
 
             label.AutoSize = false;
 
@@ -89,7 +99,15 @@ namespace kpsWindow
            
 
             label.Text ="Max: "+ kpsCalculator.maxkps;
+            if (inDarkMode)
+            {
+                label.ForeColor = Color.LawnGreen;
+            }
+            else
+            {
+                label.ForeColor = Color.Black;
 
+            }
             form.Controls.Add(label);
         
         }
@@ -101,6 +119,17 @@ namespace kpsWindow
             label.Text = "Now configuring keys. Press the new keys you want to configure from left to right";
             label.TextAlign = ContentAlignment.MiddleCenter;
             label.Location = new Point((int)(form.width - label.Width) / 2, 0);
+
+            if (inDarkMode)
+            {
+                label.ForeColor = Color.LawnGreen;
+            }
+            else
+            {
+                label.ForeColor = Color.Black;
+
+            }
+
             form.Controls.Add(label);
         
         
@@ -109,8 +138,18 @@ namespace kpsWindow
             label.Font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold);
             label.Size = new Size(140, 35);
             label.Text = "Avg: " + kpsCalculator.avgkps;
-            
-             label.TextAlign = ContentAlignment.MiddleCenter;
+
+            if (inDarkMode)
+            {
+                label.ForeColor = Color.LawnGreen;
+            }
+            else
+            {
+                label.ForeColor = Color.Black;
+
+            }
+
+            label.TextAlign = ContentAlignment.MiddleCenter;
              label.Location = new Point(0,form.height-label.Size.Height);
             form.Controls.Add(label);
 
@@ -120,18 +159,18 @@ namespace kpsWindow
         public Color kpsToColor(double kps) {
             if (kps<20 && kps >= 0)
             {
-                return Color.Purple;
+                return (inDarkMode)? Color.LawnGreen: Color.Black;
 
             }
 
             else if (kps < 40 && kps >= 20)
             {
-                return Color.DarkBlue;
+                return (inDarkMode) ? Color.LightBlue: Color.DarkBlue;
             }
 
             else if (kps < 60 && kps >= 40)
             {
-                return Color.DarkGreen;
+                return (inDarkMode) ? Color.Yellow : Color.Green;
             }
 
             else if (kps < 80 && kps >= 60)
@@ -145,7 +184,7 @@ namespace kpsWindow
                 return Color.Red;
 
             }
-            else { return Color.Black; }
+            else { return (inDarkMode) ? Color.LawnGreen : Color.Black; }
 
         }
     }
