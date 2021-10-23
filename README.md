@@ -2,11 +2,11 @@
 I created a Simple app for osu/others lol.
 
 
-## Description
+### Description
 
 An App made to track your Keys Per Second! (not a key logger)
 
-## Getting Started
+# Getting Started
 
 
 ### Dependencies
@@ -45,7 +45,7 @@ An App made to track your Keys Per Second! (not a key logger)
   * For Hit Animation: Simply drag a PNG file of your choice into the folder and rename it to "presseffect"
   * Restart the App!
   * **Removing these images will prompt the program to use its default option instead**
-## Help
+### Help
 
 Any advise for common problems or issues.
 - Please message me on discord @∮ ∂ Σ B ⋅ d ℓ #7915 regarding any issues!
@@ -64,7 +64,7 @@ Any advise for common problems or issues.
     * Get oldest here: [KpsApp v1.0](https://github.com/LeafblowerX/kpsApp/files/7356846/KpsApp.v1.0.zip)
 * 1.0.1
     * 2nd Release
-    * Get it here: [KpsApp v1.0.1](https://github.com/LeafblowerX/kpsApp/files/7402442/kpsApp.1.0.1.zip)
+    * Get it here: [KpsApp v1.0.1](https://github.com/LeafblowerX/kpsApp/files/7402571/kpsv1.0.1.zip)
  
 
     
