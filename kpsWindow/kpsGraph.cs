@@ -49,6 +49,7 @@ namespace kpsWindow
         public kpsGraph(kpsForm form, bool usePrevSession) {
             this.usePrevSession = usePrevSession;
             this.form = form;
+            
 
             this.addChart = addCharttoDisplay;
             this.addSeries = addSeriestoChart;
@@ -63,7 +64,10 @@ namespace kpsWindow
             dispForm.MaximizeBox = false;
             dispForm.Text = form.noOfKeys + "-key Graph";
             dispForm.TopMost = true;
+           
+           
             this.chart = new Chart();
+           
             
             initializeChartArea();
 
@@ -123,7 +127,7 @@ namespace kpsWindow
         }
 
         private void startDispForm() {
-                dispForm.FormClosing += onFormClosing;
+            dispForm.FormClosing += onFormClosing;
           
             dispForm.ShowDialog();
 
@@ -131,19 +135,54 @@ namespace kpsWindow
            // Console.WriteLine("threads supposedly cleared.");
         }
 
+
+        private void updateGraphColor(bool inDarkMode) {
+            if (inDarkMode)
+            {
+                cArea.AxisY.MajorGrid.LineColor = Color.LawnGreen;
+                cArea.AxisY.LineColor = Color.LawnGreen;
+                cArea.AxisX.LineColor = Color.LawnGreen;
+                cArea.AxisX.TitleForeColor = Color.LawnGreen;
+                cArea.AxisY.TitleForeColor = Color.LawnGreen;
+                cArea.AxisX.LabelStyle.ForeColor = Color.LawnGreen;
+                cArea.AxisY.LabelStyle.ForeColor = Color.LawnGreen;
+                chart.BackColor = Color.Black;
+            }
+            else
+            {
+                cArea.AxisY.MajorGrid.LineColor = Color.Black;
+                cArea.AxisY.LineColor = Color.Black;
+                cArea.AxisX.LineColor = Color.Black;
+                cArea.AxisX.TitleForeColor = Color.Black;
+                cArea.AxisY.TitleForeColor = Color.Black;
+                cArea.AxisX.LabelStyle.ForeColor = Color.Black;
+                cArea.AxisY.LabelStyle.ForeColor = Color.Black;
+                chart.BackColor = Color.White;
+
+
+
+            }
+
+
+
+        }
+
         private void addAreatoChart() {
           
             this.cArea.AxisX.Maximum = form.Kcalc.tmaxSize;
+            this.cArea.BackColor = Color.Transparent;
+            updateGraphColor(LabelHandler.inDarkMode);
             if (chart.ChartAreas.Count != 0) {
                 chart.ChartAreas.Clear();
             }
-         //  chart.ChartAreas.Clear();
+        
            chart.ChartAreas.Add(this.cArea);
 
         }
         private void addSeriestoChart(Series s) {
           
                 chart.Series.Clear();
+            
                 chart.Series.Add(s);
            
         }
@@ -161,7 +200,7 @@ namespace kpsWindow
         private void initializeChartArea() {
             chart.ChartAreas.Clear();
             this.cArea = new ChartArea();
-            cArea.BackColor = Color.Transparent;
+           // cArea.BackColor = Color.Transparent;
 
 
             cArea.AxisX.IntervalType = DateTimeIntervalType.Number;
@@ -169,11 +208,13 @@ namespace kpsWindow
             cArea.AxisX.Minimum = 0;
             cArea.AxisX.Maximum = tmaxSize;
             cArea.AxisX.Title = "Number Seconds ago";
+            
 
 
 
             cArea.AxisY.IntervalType = DateTimeIntervalType.Number;
             cArea.AxisY.Title = "Kps";
+            
 
             cArea.AxisY.Minimum = 0;
             cArea.AxisY.Maximum = 90;
@@ -181,8 +222,7 @@ namespace kpsWindow
 
             cArea.AxisX.MajorGrid.Enabled = false;
             cArea.AxisX.ArrowStyle = AxisArrowStyle.SharpTriangle;
-         
-
+           
             cArea.AxisY.ArrowStyle = AxisArrowStyle.SharpTriangle;
            // chart.ChartAreas.Add(cArea);
           
@@ -206,9 +246,12 @@ namespace kpsWindow
                     var vlist = form.Kcalc.kpsList;
                     for (int i = 0; i < vlist.Count; i++)
                     {
-
-                        series.Points.Add(new DataPoint(i, vlist[vlist.Count - 1 - i]));
-
+                        DataPoint dPoint = new DataPoint(i, vlist[vlist.Count - 1 - i]);
+                        if (LabelHandler.inDarkMode) {
+                            dPoint.Color = Color.LawnGreen;
+                        }
+                        series.Points.Add(dPoint);
+                        
 
                     }
 
