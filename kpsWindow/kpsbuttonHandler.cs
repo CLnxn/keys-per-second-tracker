@@ -727,7 +727,7 @@ namespace kpsWindow
             else { randbutton.ForeColor = Color.LawnGreen;
             }
             //Console.WriteLine("is pressed.");
-            kpsCalculator.keysPerNs++;
+            form.Kcalc.keysPerNs++;
 
 
 

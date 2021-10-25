@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
-using System.Diagnostics;
+
 namespace kpsWindow
 {
     class kpsCalculator
     {
        
 
-        public static double kps, maxkps, keysPerNs, avgkps = 0;
-      
-        public double totalkeys = 0;
+       
+
+        public double avgkps, keysPerNs, totalkeys, kps, maxkps = 0;
 
         public List<double> kpsList = new List<double>();
         public List<double> tkpsList = new List<double>();
@@ -23,7 +23,7 @@ namespace kpsWindow
 
         
         int samplesize = 3;  //number of acceptable in-a-row zeros
-        int resetAvgSize = 20; //number of accpetable in-a-row zeros before resetting avgkps (= acceptable seconds of no key press)
+        int resetAvgSize = 20; //number of acceptable in-a-row sampleT-sized sets of zeros before resetting avgkps (= acceptable seconds of no key press)
         private kpsForm sform;
      
 
@@ -62,9 +62,8 @@ namespace kpsWindow
             Thread threadloop = new Thread(loopUpdate);
             threadGroup.Add(thread);
            threadGroup.Add(threadloop);
-            thread.Start();
             threadloop.Start();
-
+            thread.Start();
 
         }
         
@@ -106,6 +105,7 @@ namespace kpsWindow
             }
 
             keysPerNs = 0;
+            kpsQ.Clear(); //prevent negative kps due to additional removal of kpsQ values after kps is reset
             kps = 0;
             totalkeys = 0;
             if (resetMax) {
@@ -114,8 +114,9 @@ namespace kpsWindow
             avgkps = 0;
             sform.FormClosing -= Sform_FormClosing;
             if (restart) {
+                
                 start();
-                Console.WriteLine("resetting done.");
+                //Console.WriteLine($"resetting done. + {keysPerNs}");
             }
            
 
@@ -136,53 +137,55 @@ namespace kpsWindow
             int sampleT = 25;
             double localkps = 0;
             
+            
             if (kpsQ.Count == 0)
             {
                 for (int i = 0; i < sampleT;i++) {
                     kpsQ.Enqueue(0);
 
                 }
+                Console.WriteLine("added 10 zeros");
                
             }
-            // var vlist = loopList; 
+           
 
-            
+           
+                while (true)
+                {
+
+                    Thread.Sleep(1000 / sampleT);
+
+
+                
+                   
+                        kpsQ.Enqueue(keysPerNs);
+                        localkps += keysPerNs;
+                        double removeVal = kpsQ.Dequeue();
+                        localkps -= removeVal;
+                       
+
+                        kps = localkps;
+
+                        if (kps > maxkps)
+                        {
+                            maxkps = kps;
+
+                        }
+
+                        if (sform.InvokeRequired && !kpsbuttonHandler.inConfigMode)
+                        {
+                            sform.Invoke(update);
+                        }
+                        keysPerNs = 0;
+
+
+                     
+
+                    
+
+                }
             
           
-            while (true)
-            {
-                
-                Thread.Sleep(1000/sampleT);
-               
-                
-                //Console.WriteLine("running");
-                
-                      kpsQ.Enqueue(keysPerNs);
-                      double removeVal = kpsQ.Dequeue();
-                  localkps += keysPerNs;
-                  localkps -= removeVal;
-                  //Console.WriteLine(localkps + " kps//kpns: " + keysPerNs);
-
-                  kps = Math.Round(localkps, 1);
-
-                  if (kps > maxkps)
-                  {
-                      maxkps = kps;
-
-                  }
-
-                  if (sform.InvokeRequired && !kpsbuttonHandler.inConfigMode)
-                  {
-                      sform.Invoke(update);
-                  }
-                  keysPerNs = 0;
-
-
-                  //localkps = 0;
-              
-
-  
-            }
 
         }
 

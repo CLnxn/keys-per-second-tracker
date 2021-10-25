@@ -81,7 +81,7 @@ namespace kpsWindow
         {
 
 
-            double localKps = kpsCalculator.kps;
+            double localKps = form.Kcalc.kps;
 
             label.Text = ""+ localKps;
             label.ForeColor = kpsToColor(localKps);
@@ -98,7 +98,7 @@ namespace kpsWindow
 
            
 
-            label.Text ="Max: "+ kpsCalculator.maxkps;
+            label.Text ="Max: "+ form.Kcalc.maxkps;
             if (inDarkMode)
             {
                 label.ForeColor = Color.LawnGreen;
@@ -137,7 +137,7 @@ namespace kpsWindow
         public void configureAvgKpsLabel() {
             label.Font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold);
             label.Size = new Size(140, 35);
-            label.Text = "Avg: " + kpsCalculator.avgkps;
+            label.Text = "Avg: " + form.Kcalc.avgkps;
 
             if (inDarkMode)
             {
