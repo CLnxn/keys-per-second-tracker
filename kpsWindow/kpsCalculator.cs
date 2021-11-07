@@ -144,6 +144,8 @@ namespace kpsWindow
                     kpsQ.Enqueue(0);
 
                 }
+                
+                
                 Console.WriteLine("added 10 zeros");
                
             }
@@ -304,7 +306,12 @@ namespace kpsWindow
                     }
 
 
-                //  Console.WriteLine(kpsLh.getLabel().Text);
+                //  Console.WriteLine(kpsLh.get
+                //
+                //
+                //
+                //
+                //  ().Text);
                 // maxkpsLh.configureHighestKpsLabel();
 
                 //reset 

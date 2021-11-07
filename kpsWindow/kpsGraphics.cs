@@ -40,7 +40,10 @@ namespace kpsWindow
         private void displayDefBg() {
             if (bgImg != null)
             {
-                //Console.WriteLine("img not null");
+                //
+                //
+                //
+                //.WriteLine("img not null");
                
             }
             else { //Console.WriteLine("img is null");

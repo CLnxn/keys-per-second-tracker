@@ -42,6 +42,7 @@ namespace kpsWindow
             this.noOfKeys = noOfKeys;
 
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            
             this.TopMost = true;
             
             try
@@ -54,10 +55,11 @@ namespace kpsWindow
             
             }
             this.bgpath = fileHandler.path + "\\bgimg.jpg";
-
-            
-           
-
+            /**
+             * code below makes window transparent albeit ugly GUI
+             * SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+             * this.TransparencyKey = Color.Transparent;
+            */
             pBox = new PictureBox();
 
          //   this.FormClosing += new FormClosingEventHandler(onFormClosing);
@@ -90,7 +92,7 @@ namespace kpsWindow
             bhandler.initializeButtonKeys();
             HookM = new hookManager(this, bhandler);
            kpsc = new kpsCalculator(this);
-           // HookM = new hookManager(this, bhandler);
+          
 
             
 
@@ -103,9 +105,17 @@ namespace kpsWindow
         }
 
 
-       
+       // protected override void OnPaintBackground(PaintEventArgs e) { /* Ignore */ }
 
-      
+
+
+
+
+
+
+
+
+
 
     }
 }

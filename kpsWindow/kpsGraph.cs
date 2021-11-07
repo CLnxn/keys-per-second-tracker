@@ -353,7 +353,8 @@ namespace kpsWindow
                 }
 
                     Thread.Sleep(1000);
-                    Console.WriteLine("graph thread #" + j);
+                    
+                Console.WriteLine("graph thread #" + j);
                
               
 

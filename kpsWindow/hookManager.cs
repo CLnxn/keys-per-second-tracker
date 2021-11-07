@@ -1,6 +1,8 @@
 ﻿using System;
 using Gma.System.MouseKeyHook;
 using System.Windows.Forms;
+using System.Threading;
+using System.Collections.Generic;
 
 namespace kpsWindow
 {
@@ -10,6 +12,10 @@ namespace kpsWindow
         private kpsForm form;
         private IKeyboardMouseEvents m_GlobalHook = Hook.GlobalEvents();
         private kpsbuttonHandler kpsHbutton;
+       
+       
+
+     
         public hookManager(kpsForm form, kpsbuttonHandler kpsHbutton) {
 
             this.form = form;
@@ -17,7 +23,11 @@ namespace kpsWindow
 
             Application.ApplicationExit += onApplicationExit;
             form.FormClosing += onFormClosing;
-
+           
+           
+          
+        
+           // form.MouseDown += onFormMouseUp;
             Subscribe();
         
         }
@@ -45,45 +55,56 @@ namespace kpsWindow
             m_GlobalHook.KeyUp -= kpsHbutton.onConfigKeyUp;
            
         }
-        
-        
-        private void GlobalHookMouseDownExt(object sender, MouseEventExtArgs e)
-        {
-            Console.WriteLine("MouseDown: \t{0}; \t System Timestamp: \t{1}", e.Button, e.Timestamp);
 
-            // uncommenting the following line will suppress the middle mouse button click
-            // if (e.Buttons == MouseButtons.Middle) { e.Handled = true; }
+
+        private void GlobalHookMouseClick(object sender, MouseEventArgs e)
+        {
+           
+          
         }
-
-        public void Unsubscribe(bool dispose)
-        {
-            //m_GlobalHook.MouseDownExt -= GlobalHookMouseDownExt;  currently not useful
-            m_GlobalHook.KeyDown -= kpsHbutton.onKeydown;
-            m_GlobalHook.KeyUp -= kpsHbutton.onKeyup;
-            if (dispose) {
-                m_GlobalHook.Dispose();
+            public void Unsubscribe(bool dispose)
+            {
+                //m_GlobalHook.MouseDownExt -= GlobalHookMouseDownExt;  currently not useful
+                m_GlobalHook.KeyDown -= kpsHbutton.onKeydown;
+                m_GlobalHook.KeyUp -= kpsHbutton.onKeyup;
+                if (dispose) {
+                    m_GlobalHook.Dispose();
+                }
             }
-        }
 
-        private void onApplicationExit(Object o, EventArgs e)
-        {
+            private void onApplicationExit(Object o, EventArgs e)
+            {
 
-            Console.WriteLine(" app closing");
-            //  Unsubscribe();
-
-
-
-        }
-
-        private void onFormClosing(Object o, FormClosingEventArgs e)
-        {
+                
             
-            Console.WriteLine(" form closing hookm");
-            Unsubscribe(true);
-            // base.OnFormClosing(e);
+            
+            
+            
+            Console.WriteLine(" app closing");
+                //  Unsubscribe();
+
+
+
+            }
+
+            private void onFormClosing(Object o, FormClosingEventArgs e)
+            {
+               
+                //form.MouseUp -= onFormMouseUp;
+                Console.WriteLine(" form closing hookm");
+                Unsubscribe(true);
+                // base.OnFormClosing(e);
+
+
+            }
+
+
+
+
+
+        
 
 
         }
-
-    }
+    
 }

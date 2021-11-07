@@ -19,6 +19,10 @@ namespace kpsWindow
 
 
             String currentpath = Environment.CurrentDirectory;
+            
+            
+            
+            
             Console.WriteLine(currentpath);
             path = currentpath + "\\Resources";
             Console.WriteLine(path);

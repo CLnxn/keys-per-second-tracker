@@ -44,9 +44,9 @@ namespace kpsWindow
             else
             {
                 label.Font = new Font(FontFamily.GenericSansSerif, 25, FontStyle.Bold);
-                label.Size = new Size(140, 50);
-                label.TextAlign = ContentAlignment.BottomCenter;
-                label.Location = new Point((int) (form.width-label.Width)/ 2, 15);
+                label.Size = new Size(280, 50);
+                label.TextAlign = ContentAlignment.MiddleCenter;
+                label.Location = new Point((int) (form.width-label.Width)/ 2,30);
                 
             }
             
@@ -77,13 +77,35 @@ namespace kpsWindow
             return this.label;
 
         }
+
+        public void configKpsTxtLabel() {
+
+            label.Font = new Font(FontFamily.GenericSansSerif, 30, FontStyle.Bold);
+            label.Size = new Size(100, 40);
+            label.TextAlign = ContentAlignment.TopCenter;
+            label.Location = new Point((int)(form.width - label.Width) / 2, 0);
+
+            label.Text = "KPS";
+            if (inDarkMode)
+            {
+                label.ForeColor = Color.LawnGreen;
+            }
+            else
+            {
+                label.ForeColor = Color.Black;
+
+            }
+            form.Controls.Add(label);
+
+
+        }
         public void configureKpsLabel()
         {
 
 
             double localKps = form.Kcalc.kps;
 
-            label.Text = ""+ localKps;
+            label.Text = "" + localKps;
             label.ForeColor = kpsToColor(localKps);
             
 

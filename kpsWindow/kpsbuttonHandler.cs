@@ -21,7 +21,7 @@ namespace kpsWindow
         private TextBox tb;
 
         private kpsForm form;
-        public LabelHandler kpsLh, maxkpsLh, configLabel, avgkpsLh;
+        public LabelHandler kpsLh, maxkpsLh, configLabel, avgkpsLh, kpsTxtLh;
         private Image img;
         
         private CheckBox cBox;
@@ -50,6 +50,7 @@ namespace kpsWindow
             this.noOfKeys = form.noOfKeys;
             this.cBox = form.Hgraphics.getCboxWrapper1().getCbox();
             InitLabels(false);
+            
 
             this.keys = fileHandler.GetKeys(noOfKeys);
 
@@ -125,7 +126,12 @@ namespace kpsWindow
                 maxkpsLh = new LabelHandler(form, true);
                 avgkpsLh = new LabelHandler(form);
                 configLabel = new LabelHandler(form);
+                kpsTxtLh = new LabelHandler(form);
+
             }
+
+          
+            kpsTxtLh.configKpsTxtLabel();
         }
 
         public void reInitButtonKeys() {
@@ -153,6 +159,8 @@ namespace kpsWindow
 
 
             setKeyMap();
+            
+            
             Console.WriteLine("reinitialising buttons");
             int centreX = (int)form.width / 2;
             int centreY = (int)form.height / 2;
@@ -507,6 +515,7 @@ namespace kpsWindow
                 form.Controls.Remove(maxkpsLh.getLabel());
                 form.Controls.Remove(cBox); //needs testing
                 form.Controls.Remove(avgkpsLh.getLabel());
+                form.Controls.Remove(kpsTxtLh.getLabel());
                 form.Controls.Remove(graphB);
                 form.Controls.Remove(configB);
                 form.Controls.Remove(resetB);
@@ -646,6 +655,7 @@ namespace kpsWindow
                 form.Controls.Add(kpsLh.getLabel());
                 form.Controls.Add(maxkpsLh.getLabel());
                 form.Controls.Add(avgkpsLh.getLabel());
+                form.Controls.Add(kpsTxtLh.getLabel());
                 
 
 
