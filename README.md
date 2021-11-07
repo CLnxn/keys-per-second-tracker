@@ -65,7 +65,7 @@ An App made to track your Keys Per Second! (not a key logger)
     * Get it here: [KpsApp v1.0.1](https://github.com/LeafblowerX/kpsApp/files/7402571/kpsv1.0.1.zip)
  * 1.0.2
     * 2nd patch Release (Latest)
-    * Get it here: [KpsApp v1.0.2](https://github.com/LeafblowerX/kpsApp/files/7408770/kpsv1.0.2.zip)
+    * Get it here: [KpsApp v1.0.2](https://github.com/LeafblowerX/kpsApp/files/7491927/KpsAppv1.0.2.zip)
 
     
     
