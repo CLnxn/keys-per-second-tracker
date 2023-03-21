@@ -12,7 +12,7 @@ An App made to track your Keys Per Second! (not a key logger)
 ### Dependencies
 
 * Gma.System.MouseKeyHook.dll (put in the same directory as your exe)
-*  System lib (duhhh)
+*  System lib 
 * Windows 10 (Recommended, Other OS versions may be unstable)
 
 ### Installing
