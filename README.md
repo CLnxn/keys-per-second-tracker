@@ -1,10 +1,6 @@
-# kpsApp
-I created a Simple app for osu/others lol.
-
-
 ### Description
 
-An App made to track your Keys Per Second! (not a key logger)
+An App made to track your keys-per-sec when playing rhythm games
 
 # Getting Started
 
@@ -24,18 +20,16 @@ An App made to track your Keys Per Second! (not a key logger)
 * How to run the program:
 ```
 1. Unzip the File
-2. Open the File and run LnztKps.exe
-3. Enjoy!
+2. Open the File and run the executable
 ```
 ### Kps App Interface/Functionality Description
 ```
-   * Important: Overlay does not work on most applications where fullscreen mode is enabled!!
+   * Important: Overlay does not work on most applications when fullscreen mode is enabled
    * Graph button shows you the Kps-Time Graph that you've been yearning to analyse with
    * Freeze Button freezes graph
-   * Play/Break button changes the horizontal scale of the graph to accomodate longer gameplay tracking!
+   * Play/Break button changes the horizontal scale of the graph to accomodate longer gameplay tracking
    * 7 key/4 key button changes mode
-   * Config button allows you to customise your own keybinds which you want to track!
-   * Have Fun analysing!
+   * Config button allows you to customise your own keybinds which you want to track
 
 ```
 
