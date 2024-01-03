@@ -39,13 +39,6 @@ An App made to track your keys-per-sec when playing rhythm games
   * For Hit Animation: Simply drag a PNG file of your choice into the folder and rename it to "presseffect"
   * Restart the App!
   * **Removing these images will prompt the program to use its default option instead**
-### Help
-- Please message me on discord @∮ ∂ Σ B ⋅ d ℓ #7915 regarding any issues!
-
-
-
-### Authors
-* [Lnzt(LeafBlowerX)](https://github.com/LeafblowerX)
 
 
 
